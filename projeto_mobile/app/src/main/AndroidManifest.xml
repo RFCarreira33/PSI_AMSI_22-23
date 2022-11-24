@@ -10,18 +10,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Projeto.NoActionBar"
+        android:theme="@style/Theme.Projeto"
         tools:targetApi="31">
         <activity
             android:name=".ShoppingCart"
+            android:parentActivityName=".MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
-                android:theme="@style/Theme.Projeto"
                 android:value="" />
         </activity>
         <activity
             android:name=".DetailsProduct"
+            android:parentActivityName=".MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -49,6 +50,7 @@
         </activity>
         <activity
             android:name=".PersonalArea"
+            android:parentActivityName=".MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -11,19 +11,6 @@
     android:paddingBottom="10dp"
     tools:context=".DetailsProduct">
 
-    <TextView
-        android:id="@+id/tvNome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:editable="false"
-        android:text="TextView"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-
     <ImageView
         android:id="@+id/imageCapa"
         android:layout_width="match_parent"
