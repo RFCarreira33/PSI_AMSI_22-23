@@ -8,14 +8,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.projeto.R;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 import Models.Produto;
 
 public class ProductGridAdapter extends BaseAdapter
 {
+    //url used to get an image
+    private static final String URL = "http://10.0.2.2:8080/img/";
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<Produto> Produtos;
@@ -77,11 +82,14 @@ public class ProductGridAdapter extends BaseAdapter
         }
 
         public void update(Produto produto){
-            imgCapa.setImageResource(produto.getCapa());
             tvNome.setText(produto.getNome());
             tvStock.setText("Em Stock");
             tvDetalhes.setText(produto.getDetalhes());
             tvPreco.setText(produto.getPreco()+" €");
+            Glide.with(context)
+                    .load(URL+produto.getCapa())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgCapa);
         }
     }
 }

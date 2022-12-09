@@ -3,10 +3,10 @@ package Models;
 public class Produto {
     String nome, detalhes;
     int id;
-    int capa;
+    String capa;
     double preco;
 
-    public Produto(int id, String nome, String detalhes, int capa, double preco) {
+    public Produto(int id, String nome, String detalhes, String capa, double preco) {
         this.nome = nome;
         this.detalhes = detalhes;
         this.id = id;
@@ -46,11 +46,11 @@ public class Produto {
         this.detalhes = detalhes;
     }
 
-    public int getCapa() {
+    public String getCapa() {
         return capa;
     }
 
-    public void setCapa(int capa) {
+    public void setCapa(String capa) {
         this.capa = capa;
     }
 

@@ -14,13 +14,13 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 import Adapters.ProductGridAdapter;
+import Listeners.ProdutoListener;
 import Models.Produto;
-import Models.SingletonProdutos;
+import Models.Singleton;
 
-public class ProductsGrid extends Fragment {
+public class ProductsGrid extends Fragment implements ProdutoListener {
 
     private GridView gvProdutos;
-    private ArrayList<Produto> produtos;
 
     public ProductsGrid() {
         // Required empty public constructor
@@ -31,8 +31,8 @@ public class ProductsGrid extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products_grid, container, false);
         gvProdutos = view.findViewById(R.id.gvProdutos);
-        produtos = SingletonProdutos.getInstance().getProdutos();
-        gvProdutos.setAdapter(new ProductGridAdapter(getContext(), produtos));
+        Singleton.getInstance(getContext()).setProdutoListener(this);
+        Singleton.getInstance(getContext()).getAllProdutosAPI(getContext());
 
         gvProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -44,5 +44,12 @@ public class ProductsGrid extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onRefreshProdutos(ArrayList<Produto> listaProdutos) {
+        if (listaProdutos != null) {
+            gvProdutos.setAdapter(new ProductGridAdapter(getContext(), listaProdutos));
+        }
     }
 }

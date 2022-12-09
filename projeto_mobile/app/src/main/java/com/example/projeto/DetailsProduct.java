@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import Models.Produto;
-import Models.SingletonProdutos;
 
 public class DetailsProduct extends AppCompatActivity {
 
@@ -48,7 +47,7 @@ public class DetailsProduct extends AppCompatActivity {
 
         int id = getIntent().getIntExtra("Produto", 0);
         if(id>0){
-            produto = SingletonProdutos.getInstance().getProduto(id);
+            //produto = SingletonProdutos.getInstance().getProduto(id);
             if(produto != null){
                 carregarProduto();
             }
@@ -87,7 +86,7 @@ public class DetailsProduct extends AppCompatActivity {
     }
 
     private void carregarProduto(){
-        imgCapa.setImageResource(produto.getCapa());
+        //imgCapa.setImageResource(produto.getCapa());
         tvDetails.setText(produto.getDetalhes());
         tvStock.setText("Em Stock");
         tvPreco.setText(produto.getPreco()+" €");

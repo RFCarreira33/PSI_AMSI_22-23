@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import Adapters.CartListAdapter;
 import Adapters.ProductGridAdapter;
 import Models.Carrinho;
-import Models.SingletonCarrinho;
-import Models.SingletonProdutos;
 
 
 public class CartList extends Fragment {
@@ -34,7 +32,7 @@ public class CartList extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart_list, container, false);
         lvCart= view.findViewById(R.id.lvCart);
-        carrinhos = SingletonCarrinho.getInstance().getCarrinhos();
+        //carrinhos = SingletonCarrinho.getInstance().getCarrinhos();
         lvCart.setAdapter(new CartListAdapter(getContext(), carrinhos));
 
 
