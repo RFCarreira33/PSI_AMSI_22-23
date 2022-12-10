@@ -9,17 +9,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import Listeners.DetailsListener;
 import Models.Produto;
+import Models.Singleton;
+import Utils.Public;
 
-public class DetailsProduct extends AppCompatActivity {
+public class DetailsProduct extends AppCompatActivity implements DetailsListener {
 
-    private Produto produto;
     private ImageView imgCapa;
     private TextView tvDetails, tvStock, tvPreco;
     private ImageButton btnMore, btnMinus;
@@ -31,7 +36,6 @@ public class DetailsProduct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_product);
-
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
 
@@ -46,12 +50,8 @@ public class DetailsProduct extends AppCompatActivity {
         numQuant = findViewById(R.id.numQuantity);
 
         int id = getIntent().getIntExtra("Produto", 0);
-        if(id>0){
-            //produto = SingletonProdutos.getInstance().getProduto(id);
-            if(produto != null){
-                carregarProduto();
-            }
-        }
+        Singleton.getInstance(this).setDetailsListener(this);
+        Singleton.getInstance(this).getProdutoAPI(this, id);
     }
 
     @Override
@@ -85,12 +85,46 @@ public class DetailsProduct extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void carregarProduto(){
-        //imgCapa.setImageResource(produto.getCapa());
+    private void carregarProduto(Produto produto) {
         tvDetails.setText(produto.getDetalhes());
         tvStock.setText("Em Stock");
         tvPreco.setText(produto.getPreco()+" €");
         setTitle(produto.getNome());
+        Glide.with(this)
+                .load(Public.imgURL+produto.getCapa())
+                .into(imgCapa);
 
     }
+
+    @Override
+    public void onRefreshDetails(Produto produto) {
+        if (produto != null){
+            carregarProduto(produto);
+        }
+    }
+
+
+    //Buttons
+    public void onCLickChangeQuantity(View view) {
+        int quantity = Integer.parseInt(numQuant.getText().toString());
+        int id = view.getId();
+        switch (id){
+            case R.id.btnMinus:
+                if(quantity > 1)
+                    quantity--;
+                break;
+            case R.id.btnMore:
+                if (quantity < 20)
+                    quantity++;
+                break;
+        }
+        numQuant.setText(String.valueOf(quantity));
+    }
+
+    public void onClickAddCart(View view) {
+        int id = getIntent().getIntExtra("Produto", 0);
+        int quantity = Integer.parseInt(numQuant.getText().toString());
+        Singleton.getInstance(this).addCartAPI(this, id, quantity);
+    }
+
 }

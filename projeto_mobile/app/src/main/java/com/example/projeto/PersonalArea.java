@@ -5,10 +5,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import Utils.Public;
 
 public class PersonalArea extends AppCompatActivity {
 
@@ -49,5 +54,14 @@ public class PersonalArea extends AppCompatActivity {
             startActivity(i);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onCLickLogout(View view){
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(Public.TOKEN);
+        editor.apply();
+        Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

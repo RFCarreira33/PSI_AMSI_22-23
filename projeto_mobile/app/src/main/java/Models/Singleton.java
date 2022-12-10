@@ -1,11 +1,10 @@
 package Models;
 
-import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import androidx.constraintlayout.motion.utils.StopLogic;
-
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,21 +17,22 @@ import com.example.projeto.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Queue;
+import java.util.HashMap;
+import java.util.Map;
 
+import Listeners.DetailsListener;
 import Listeners.ProdutoListener;
-import Utils.ProdutosJsonParser;
+import Utils.JsonParser;
+import Utils.Public;
 
 public class Singleton {
     private static Singleton single_instance = null;
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
-    private static final String URL="http://10.0.2.2:8080/api";
     private ProdutoListener produtoListener;
+    private DetailsListener detailsListener;
 
     public static synchronized Singleton getInstance(Context context) {
         if (single_instance == null) {
@@ -52,14 +52,19 @@ public class Singleton {
         this.produtoListener = produtoListener;
     }
 
+    public void setDetailsListener(DetailsListener detailsListener) {
+        this.detailsListener = detailsListener;
+    }
+
+    //section produtos
     public void getAllProdutosAPI(final Context context) {
-        if(!ProdutosJsonParser.isConnected(context)){
+        if(!JsonParser.isConnected(context)){
             Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
         }else {
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL + "/produtos", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/produtos", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    produtos = ProdutosJsonParser.parserJsonProdutos(response);
+                    produtos = JsonParser.parserJsonProdutos(response);
                     if (produtoListener != null)
                         produtoListener.onRefreshProdutos(produtos);
                 }
@@ -73,21 +78,127 @@ public class Singleton {
         }
     }
 
-
-
-/*
-    public ArrayList<Carrinho> getCarrinhos() {
-        return new ArrayList(carrinhos);
-    }
-
-    public Carrinho getCarrinho(int id){
-        for (Carrinho c:carrinhos){
-            if(c.getId() == id){
-                return c;
-            }
+    public void getProdutoAPI(final Context context, int id) {
+        if(!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+        }else {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Public.apiURL + "/produtos/" + id, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Produto produto = JsonParser.parserJsonProduto(response);
+                    if (detailsListener != null)
+                        detailsListener.onRefreshDetails(produto);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(jsonObjectRequest);
         }
-        return null;
     }
 
- */
+    //section end produtos
+
+    //section User
+    public void loginUserAPI(final Context context, final String credentials){
+        if (!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+        }else {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, Public.apiURL + "/user/login", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(Public.TOKEN, response);
+                    editor.apply();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println(error.getMessage());
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Basic " + credentials);
+                    return headers;
+                }
+                };
+            volleyQueue.add(stringRequest);
+        }
+
+    }
+
+    public void createUserAPI(final Context context, final Signup user){
+        if(!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+        }else {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Public.apiURL + "/user/register", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Override
+                protected java.util.Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("username", user.getUsername());
+                    params.put("email", user.getEmail());
+                    params.put("password", user.getPassword());
+                    params.put("nome", user.getNome());
+                    params.put("codPostal", user.getCodPostal());
+                    params.put("telefone", user.getTelefone());
+                    params.put("nif", user.getNif());
+                    params.put("morada", user.getMorada());
+                    return params;
+                }
+            };
+            volleyQueue.add(stringRequest);
+        }
+
+    }
+    //section end User
+
+    //section Cart
+
+    public void addCartAPI(final Context context, final int idProduto, final int quantidade){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+        }else {
+            StringRequest stringRequest = new StringRequest(
+                    Request.Method.POST, Public.apiURL + "/carrinho/create?access-token="+ sharedPreferences.getString(Public.TOKEN, null),
+                    new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println(error.getMessage());
+                }
+            }){
+                @Override
+                protected java.util.Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("id_Produto", String.valueOf(idProduto));
+                    params.put("quantidade", String.valueOf(quantidade));
+                    return params;
+                }
+            };
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    
+
 }

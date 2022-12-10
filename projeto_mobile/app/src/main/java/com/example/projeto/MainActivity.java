@@ -6,15 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import Utils.Public;
+
 public class MainActivity extends AppCompatActivity {
 
-    private FragmentContainerView fvProductsGrid, fvCart, fvHome, fvPersonalArea;
     ActionBar actionBar = null;
 
     @Override
@@ -44,15 +46,23 @@ public class MainActivity extends AppCompatActivity {
         switch (itemId){
             case R.id.app_bar_cart:
                 i = new Intent(this, ShoppingCart.class);
+                startActivity(i);
                 break;
             case R.id.app_bar_category:
-                i = new Intent(this, Login.class);
+                i = new Intent(this, PersonalArea.class);
+                startActivity(i);
                 break;
             case R.id.app_bar_personalArea:
-                i = new Intent(this, PersonalArea.class);
+                SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+                if(sharedPreferences.contains(Public.TOKEN)){
+                    i = new Intent(this, PersonalArea.class);
+                    startActivity(i);
+                }else {
+                    i = new Intent(this, Login.class);
+                    startActivity(i);
+                }
                 break;
         }
-        startActivity(i);
         return super.onOptionsItemSelected(item);
     }
 

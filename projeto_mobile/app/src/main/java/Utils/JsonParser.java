@@ -11,8 +11,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Models.Produto;
+import Models.Signup;
 
-public class ProdutosJsonParser {
+public class JsonParser {
 
     public static ArrayList<Produto> parserJsonProdutos(JSONArray response){
         ArrayList<Produto> produtos = new ArrayList<>();
@@ -34,10 +35,9 @@ public class ProdutosJsonParser {
     }
 
 
-    public static Produto parserJsonProduto(String response){
+    public static Produto parserJsonProduto(JSONObject produto){
         Produto produtoAux = null;
         try {
-            JSONObject produto = new JSONObject(response);
             int id= produto.getInt("id");
             String nome = produto.getString("nome");
             String imagem = produto.getString("imagem");

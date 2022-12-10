@@ -52,4 +52,5 @@ public class ProductsGrid extends Fragment implements ProdutoListener {
             gvProdutos.setAdapter(new ProductGridAdapter(getContext(), listaProdutos));
         }
     }
+
 }
