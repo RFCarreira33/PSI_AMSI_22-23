@@ -2,46 +2,24 @@ package Models;
 
 public class Carrinho {
     int id;
-    String nome;
-    int capa;
-    double preco;
+    Produto produto;
+    int quantidade;
 
-    public Carrinho(int id, String nome, int capa, double preco) {
-        this.id = id;
-        this.nome = nome;
-        this.capa = capa;
-        this.preco = preco;
+    public Carrinho(Produto produto, int quantidade) {
+        this.produto = produto;
+        this.quantidade = quantidade;
+        this.id = produto.getId();
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public int getCapa() {
-        return capa;
-    }
-
-    public void setCapa(int capa) {
-        this.capa = capa;
-    }
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-        this.preco = preco;
     }
 }

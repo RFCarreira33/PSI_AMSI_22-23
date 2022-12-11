@@ -1,6 +1,7 @@
 package Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.projeto.R;
 
 import java.util.ArrayList;
 
 import Models.Produto;
+import Utils.Public;
 
 public class ProductGridAdapter extends BaseAdapter
 {
@@ -71,17 +75,26 @@ public class ProductGridAdapter extends BaseAdapter
             tvDetalhes = view.findViewById(R.id.tvDetalhes);
             tvNome = view.findViewById(R.id.tvNome);
             tvStock = view.findViewById(R.id.tvStock);
-            tvPreco = view.findViewById(R.id.tvPreco);
+            tvPreco = view.findViewById(R.id.tvPrecoTotal);
 
 
         }
 
         public void update(Produto produto){
-            imgCapa.setImageResource(produto.getCapa());
             tvNome.setText(produto.getNome());
-            tvStock.setText("Em Stock");
+            if(produto.isEmStock()) {
+                tvStock.setText(R.string.inStock);
+                tvStock.setTextColor(Color.parseColor("#048000"));
+            } else {
+                tvStock.setText(R.string.outStock);
+                tvStock.setTextColor(Color.parseColor("#b00200"));
+            }
             tvDetalhes.setText(produto.getDetalhes());
-            tvPreco.setText(produto.getPreco()+" €");
+            tvPreco.setText(String.format("%s €", produto.getPreco()));
+            Glide.with(context)
+                    .load(Public.imgURL +produto.getCapa())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgCapa);
         }
     }
 }

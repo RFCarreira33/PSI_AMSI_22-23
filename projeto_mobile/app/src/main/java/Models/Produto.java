@@ -1,17 +1,33 @@
 package Models;
 
 public class Produto {
-    String nome, detalhes;
+    String nome, detalhes, marca, referencia;
     int id;
-    int capa;
+    String capa;
     double preco;
+    boolean emStock;
 
-    public Produto(int id, String nome, String detalhes, int capa, double preco) {
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public Produto(int id, String nome, String detalhes, String capa, double preco, String marca, String referencia, boolean emStock) {
         this.nome = nome;
+        this.marca = marca;
+        this.referencia = referencia;
         this.detalhes = detalhes;
         this.id = id;
         this.capa = capa;
         this.preco = preco;
+        this.emStock = emStock;
+    }
+
+    public boolean isEmStock() {
+        return emStock;
     }
 
     public int getId() {
@@ -26,32 +42,16 @@ public class Produto {
         return preco;
     }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
     public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getDetalhes() {
         return detalhes;
     }
 
-    public void setDetalhes(String detalhes) {
-        this.detalhes = detalhes;
-    }
-
-    public int getCapa() {
+    public String getCapa() {
         return capa;
-    }
-
-    public void setCapa(int capa) {
-        this.capa = capa;
     }
 
 }

@@ -1,19 +1,23 @@
 package Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.projeto.R;
 
 import java.util.ArrayList;
 
 import Models.Carrinho;
-import Models.Produto;
+import Utils.Public;
 
 public class CartListAdapter extends BaseAdapter {
 
@@ -65,22 +69,36 @@ public class CartListAdapter extends BaseAdapter {
     private class ViewHolderLista{
 
         private ImageView imgCapa;
-        private TextView tvNome,  tvStock, tvPreco;
+        private TextView tvNome,  tvStock, tvPrecoTotal, tvPreco, tvQuantidade;
 
         public ViewHolderLista(View view) {
             imgCapa = view.findViewById(R.id.imageCapa);
             tvNome = view.findViewById(R.id.tvNome);
             tvStock = view.findViewById(R.id.tvStock);
+            tvPrecoTotal = view.findViewById(R.id.tvPrecoTotal);
+            tvQuantidade = view.findViewById(R.id.tvQuantidade);
             tvPreco = view.findViewById(R.id.tvPreco);
 
 
         }
 
         public void update(Carrinho carrinho){
-            imgCapa.setImageResource(carrinho.getCapa());
-            tvNome.setText(carrinho.getNome());
-            tvStock.setText("Em Stock");
-            tvPreco.setText(carrinho.getPreco()+" €");
+            tvNome.setText(carrinho.getProduto().getNome());
+            double preco = carrinho.getProduto().getPreco() * carrinho.getQuantidade();
+            tvPrecoTotal.setText(String.format("Total %s €", String.valueOf(preco)));
+            tvQuantidade.setText(String.format("Qtd %s", String.valueOf(carrinho.getQuantidade())));
+            tvPreco.setText(String.format("%s €", String.valueOf(carrinho.getProduto().getPreco())));
+            if(carrinho.getProduto().isEmStock()){
+                tvStock.setText(R.string.inStock);
+                tvStock.setTextColor(Color.parseColor("#048000"));
+            }else{
+                tvStock.setText(R.string.outStock);
+                tvStock.setTextColor(Color.parseColor("#b00200"));
+            }
+            Glide.with(context)
+                    .load(Public.imgURL+ carrinho.getProduto().getCapa())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgCapa);
         }
     }
 
