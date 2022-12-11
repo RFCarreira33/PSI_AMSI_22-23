@@ -3,26 +3,16 @@ package com.example.projeto;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import Models.Singleton;
-import Utils.Public;
 
 public class Login extends AppCompatActivity {
     private EditText tbUsername, tbPassword;
@@ -58,7 +48,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void onClickRegister(View view){
-        Intent i = new Intent(Login.this, UserRegister.class);
+        Intent i = new Intent(Login.this, Register.class);
         startActivity(i);
         finish();
     }

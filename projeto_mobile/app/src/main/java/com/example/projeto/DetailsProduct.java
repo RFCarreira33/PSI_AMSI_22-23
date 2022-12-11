@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +27,7 @@ import Utils.Public;
 public class DetailsProduct extends AppCompatActivity implements DetailsListener {
 
     private ImageView imgCapa;
-    private TextView tvDetails, tvStock, tvPreco;
+    private TextView tvDetails, tvStock, tvPreco, tvMarca, tvReferencia;
     private ImageButton btnMore, btnMinus;
     private EditText numQuant;
     private Button btnCart;
@@ -43,11 +44,14 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
         imgCapa = findViewById(R.id.imageCapa);
         tvDetails = findViewById(R.id.tvDetalhes);
         tvStock = findViewById(R.id.tvStock);
-        tvPreco = findViewById(R.id.tvPreco);
+        tvPreco = findViewById(R.id.tvPrecoTotal);
         btnMinus = findViewById(R.id.btnMinus);
         btnMore = findViewById(R.id.btnMore);
         btnCart = findViewById(R.id.btnAddCart);
         numQuant = findViewById(R.id.numQuantity);
+        tvMarca = findViewById(R.id.tvMarca);
+        tvReferencia = findViewById(R.id.tvReferencia);
+
 
         int id = getIntent().getIntExtra("Produto", 0);
         Singleton.getInstance(this).setDetailsListener(this);
@@ -87,8 +91,17 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
 
     private void carregarProduto(Produto produto) {
         tvDetails.setText(produto.getDetalhes());
-        tvStock.setText("Em Stock");
-        tvPreco.setText(produto.getPreco()+" €");
+        tvMarca.setText(produto.getMarca());
+        tvReferencia.setText(produto.getReferencia());
+        if(produto.isEmStock()) {
+            tvStock.setText(R.string.inStock);
+            tvStock.setTextColor(Color.parseColor("#048000"));
+        } else {
+            tvStock.setText(R.string.outStock);
+            btnCart.setEnabled(false);
+            tvStock.setTextColor(Color.parseColor("#b00200"));
+        }
+        tvPreco.setText(String.format("%s €", produto.getPreco()));
         setTitle(produto.getNome());
         Glide.with(this)
                 .load(Public.imgURL+produto.getCapa())

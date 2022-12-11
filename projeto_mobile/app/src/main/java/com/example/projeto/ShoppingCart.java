@@ -8,19 +8,59 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ShoppingCart extends AppCompatActivity {
+import java.util.ArrayList;
 
-    private TextView tvTotalPrice;
+import Adapters.CartListAdapter;
+import Listeners.CartListener;
+import Models.Carrinho;
+import Models.Singleton;
+
+public class ShoppingCart extends AppCompatActivity implements CartListener {
+
+    private TextView tvPrecoTotal,tvNumeroArtigos ;
+    private ListView lvCart;
+    private double Total;
+    private int TotalArtigos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
-        setTitle("Shopping Cart");
-        tvTotalPrice = findViewById(R.id.tvPrecoTotal);
+        setTitle("Carrinho de Compras");
+        tvPrecoTotal = findViewById(R.id.tvPrecoTotal);
+        tvNumeroArtigos = findViewById(R.id.tvArtigos);
+        lvCart = findViewById(R.id.lvCart);
 
+        lvCart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Carrinho carrinho = (Carrinho) adapterView.getItemAtPosition(position);
+                int quantidade = carrinho.getQuantidade();
+                Intent intent = new Intent(ShoppingCart.this, EditCart.class);
+                intent.putExtra("Quantidade", quantidade);
+                intent.putExtra("Produto", carrinho.getProduto().getId());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        Total = 0;
+        TotalArtigos = 0;
+        updateCarrinho();
+        super.onResume();
+    }
+
+    private void updateCarrinho(){
+        Singleton.getInstance(this).setCartListener(this);
+        Singleton.getInstance(this).viewCartAPI(this);
     }
 
     @Override
@@ -51,4 +91,32 @@ public class ShoppingCart extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void onClickClear(View view){
+        Singleton.getInstance(this).clearCartAPI(this);
+        finish();
+    }
+
+    public void onClickBuy(View view){
+        Singleton.getInstance(this).buyCartAPI(this);
+        finish();
+    }
+
+
+
+
+    @Override
+    public void onRefreshCart(ArrayList<Carrinho> carrinhos) {
+        if(carrinhos != null) {
+            for (Carrinho c : carrinhos) {
+                Total += c.getProduto().getPreco() * c.getQuantidade();
+                TotalArtigos += c.getQuantidade();
+            }
+            tvPrecoTotal.setText(String.format("%s€", Total));
+            tvNumeroArtigos.setText(String.format("Artigos: %s", TotalArtigos));
+            lvCart.setAdapter(new CartListAdapter(this, carrinhos));
+        }
+    }
+
+
 }

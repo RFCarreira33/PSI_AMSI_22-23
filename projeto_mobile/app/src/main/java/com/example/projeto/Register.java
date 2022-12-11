@@ -11,13 +11,13 @@ import android.widget.Toast;
 import Models.Signup;
 import Models.Singleton;
 
-public class UserRegister extends AppCompatActivity {
+public class Register extends AppCompatActivity {
     private EditText tbEmail, tbPassword, tbUsername, tbNif, tbTelefone, tbMorada, tbCodPostal, tbNome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_register);
+        setContentView(R.layout.activity_register);
         tbEmail = findViewById(R.id.tbEmail);
         tbPassword = findViewById(R.id.tbPass);
         tbUsername = findViewById(R.id.tbUsername);

@@ -17,7 +17,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".UserRegister"
+            android:name=".EditCart"
+            android:label="@string/EditCart"
+            android:parentActivityName=".ShoppingCart"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Register"
             android:exported="false"
             android:label="@string/register"
             android:parentActivityName=".MainActivity">

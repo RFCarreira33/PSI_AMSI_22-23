@@ -12,5 +12,8 @@
     <string name="nif">NIF</string>
     <string name="nome">Nome</string>
     <string name="newAccount">Criar uma Conta</string>
+    <string name="inStock">Em Stock</string>
+    <string name="outStock">Fora de Stock</string>
     <string name="sem_internet">No Internet Connection</string>
+    <string name="EditCart">Editar Carrinho</string>
 </resources>
