@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -62,13 +63,21 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.app_bar, menu);
+        menu.removeItem(R.id.app_bar_cart);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
         Intent i = null;
+        boolean isLogged = sharedPreferences.contains(Public.TOKEN);
+        if(!isLogged) {
+            i = new Intent(this, Login.class);
+            startActivity(i);
+            return super.onOptionsItemSelected(item);
+        }
 
         switch (itemId){
             case R.id.app_bar_cart:
@@ -84,6 +93,7 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
 
         if(i != null){
             startActivity(i);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

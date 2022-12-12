@@ -14,11 +14,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Models.Carrinho;
+import Models.Fatura;
 import Models.Produto;
 import Models.Signup;
 
 public class JsonParser {
 
+    //region Produto
     public static ArrayList<Produto> parserJsonProdutos(JSONArray response){
         ArrayList<Produto> produtos = new ArrayList<>();
         try {
@@ -62,6 +64,10 @@ public class JsonParser {
         return produtoAux;
     }
 
+    //endregion
+
+    //region Carrinho
+
     public static ArrayList<Carrinho> parserJsonCarrinho (JSONArray response){
         ArrayList<Carrinho> carrinhos = new ArrayList<>();
         try {
@@ -84,6 +90,12 @@ public class JsonParser {
         }
         return carrinhos;
     }
+
+    //endregion
+
+    //region Fatura
+
+    //endregion
 
     public static boolean isConnected(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
