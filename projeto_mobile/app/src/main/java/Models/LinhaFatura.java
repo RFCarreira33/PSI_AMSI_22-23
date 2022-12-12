@@ -2,17 +2,33 @@ package Models;
 
 public class LinhaFatura {
     String produto_nome, produto_referencia;
-    int quantidade;
+    int quantidade, id, id_Fatura;
     double valor, valorIva;
 
-    public LinhaFatura(String produto_nome, String produto_referencia, int quantidade, double valor, double valorIva) {
+
+    public LinhaFatura(int id, int id_Fatura, String produto_nome, String produto_referencia, int quantidade, double valor, double valorIva) {
         this.produto_nome = produto_nome;
         this.produto_referencia = produto_referencia;
         this.quantidade = quantidade;
         this.valor = valor;
+        this.id_Fatura = id_Fatura;
         this.valorIva = valorIva;
     }
 
+    public int getId_Fatura() {
+        return id_Fatura;
+    }
+
+    public void setId_Fatura(int id_Fatura) {
+        this.id_Fatura = id_Fatura;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getProduto_nome() {
         return produto_nome;
     }

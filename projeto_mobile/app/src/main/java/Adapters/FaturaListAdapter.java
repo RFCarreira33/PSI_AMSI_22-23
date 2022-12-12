@@ -5,14 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.example.projeto.R;
 
 import java.util.ArrayList;
 
+import Listeners.FaturasListener;
 import Models.Fatura;
 
-public class FaturaListAdapter extends BaseAdapter {
+public class FaturaListAdapter extends BaseAdapter
+{
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<Fatura> Faturas;
@@ -39,10 +42,38 @@ public class FaturaListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+
+        if(inflater == null)
+            inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if(view == null)
+            view = inflater.inflate(R.layout.item_fatura, null);
+
+        FaturaListAdapter.ViewHolderLista viewHolderLista = (FaturaListAdapter.ViewHolderLista) view.getTag();
+
+        if(viewHolderLista == null){
+            viewHolderLista = new ViewHolderLista(view);
+            view.setTag(viewHolderLista);
+        }
+
+        viewHolderLista.update(Faturas.get(i));
         return view;
     }
 
     private class ViewHolderLista{
 
+        private TextView tvFatura, tvTotal, tvData;
+
+        public ViewHolderLista(View view){
+            tvFatura = view.findViewById(R.id.tvFaturaId);
+            tvTotal = view.findViewById(R.id.tvTotal);
+            tvData = view.findViewById(R.id.tvData);
+        }
+
+        public void update(Fatura fatura){
+            tvFatura.setText(String.format("Fatura Nº%s", String.valueOf(fatura.getId())));
+            tvTotal.setText(String.format("Total: %s€", String.valueOf(fatura.getValorTotal())));
+            tvData.setText(String.format("Compra efetuada a %s", fatura.getData()));
+        }
     }
 }

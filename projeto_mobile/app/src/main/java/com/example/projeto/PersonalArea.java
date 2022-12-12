@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import Models.Fatura;
 import Utils.Public;
 
 public class PersonalArea extends AppCompatActivity {
@@ -64,4 +65,5 @@ public class PersonalArea extends AppCompatActivity {
         Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_SHORT).show();
         finish();
     }
+
 }

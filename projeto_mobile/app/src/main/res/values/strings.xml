@@ -16,4 +16,6 @@
     <string name="outStock">Fora de Stock</string>
     <string name="sem_internet">No Internet Connection</string>
     <string name="EditCart">Editar Carrinho</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
