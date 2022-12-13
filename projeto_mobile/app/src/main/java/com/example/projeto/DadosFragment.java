@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -61,15 +62,25 @@ public class DadosFragment extends Fragment implements View.OnClickListener,Dado
     @Override
     public void onClick(View view)
     {
-        Dados dadosAux = null;
-        String nome = tvNome.getText().toString();
-        String telefone = tvTelefone.getText().toString();
-        String nif = tvNif.getText().toString();
-        String morada = tvMorada.getText().toString();
-        String codPostal = tvCodpostal.getText().toString();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Alteração de dados");
+        builder.setMessage("Tem a certeza que pretende guardar as mudanças efetuadas?");
+        builder.setPositiveButton("Sim", (dialog, which) -> {
+            Dados dadosAux = null;
+            String nome = tvNome.getText().toString();
+            String telefone = tvTelefone.getText().toString();
+            String nif = tvNif.getText().toString();
+            String morada = tvMorada.getText().toString();
+            String codPostal = tvCodpostal.getText().toString();
 
-        dadosAux = new Dados(nome,telefone,nif,morada, codPostal);
+            dadosAux = new Dados(nome,telefone,nif,morada, codPostal);
 
-        Singleton.getInstance(getContext()).updateDadosAPI(getContext(),dadosAux);
+            Singleton.getInstance(getContext()).updateDadosAPI(getContext(),dadosAux);
+        });
+        builder.setNegativeButton("Não", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
+
     }
 }

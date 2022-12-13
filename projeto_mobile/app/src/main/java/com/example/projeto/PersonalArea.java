@@ -2,6 +2,7 @@ package com.example.projeto;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 
@@ -69,14 +70,24 @@ public class PersonalArea extends AppCompatActivity {
     }
 
     public void onCLickLogout(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Terminar Sessão");
+        builder.setMessage("Tem a certeza que pretende terminar sessão?");
+        builder.setPositiveButton("Sim", (dialog, which) -> {
+            dbHelper.removeAllFaturas();
+            SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove(Public.TOKEN);
+            editor.apply();
+            Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_SHORT).show();
+            finish();
+        });
+        builder.setNegativeButton("Não", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
+
         //destroys everything from the user session
-        dbHelper.removeAllFaturas();
-        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(Public.TOKEN);
-        editor.apply();
-        Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_SHORT).show();
-        finish();
     }
 
     public void onClickSwitch(View view){

@@ -1,6 +1,7 @@
 package com.example.projeto;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
 
     private TextView tvPrecoTotal,tvNumeroArtigos ;
     private ListView lvCart;
+    private Button btnCheckout, btnClearCart;
     private double Total;
     private int TotalArtigos;
 
@@ -38,6 +41,8 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         tvPrecoTotal = findViewById(R.id.tvPrecoTotal);
         tvNumeroArtigos = findViewById(R.id.tvArtigos);
         lvCart = findViewById(R.id.lvCart);
+        btnCheckout = findViewById(R.id.btnComprar);
+        btnClearCart = findViewById(R.id.btnClear);
 
         lvCart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -103,13 +108,27 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
     }
 
     public void onClickClear(View view){
-        Singleton.getInstance(this).clearCartAPI(this);
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Limpar Carrinho");
+        builder.setMessage("Tem a certeza que pretende limpar o carrinho?");
+        builder.setPositiveButton("Sim", (dialogInterface, i) -> {
+            Singleton.getInstance(this).clearCartAPI(this);
+            updateCarrinho();
+        });
+        builder.setNegativeButton("Não", (dialogInterface, i) -> dialogInterface.dismiss());
+        builder.show();
     }
 
     public void onClickBuy(View view){
-        Singleton.getInstance(this).buyCartAPI(this);
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Finalizar Compra");
+        builder.setMessage("Tem a certeza que pretende finalizar a compra?");
+        builder.setPositiveButton("Sim", (dialogInterface, i) -> {
+            Singleton.getInstance(this).buyCartAPI(this);
+            finish();
+        });
+        builder.setNegativeButton("Não", (dialogInterface, i) -> dialogInterface.dismiss());
+        builder.show();
     }
 
 
@@ -118,6 +137,10 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
     @Override
     public void onRefreshCart(ArrayList<Carrinho> carrinhos) {
         if(carrinhos != null) {
+            if (carrinhos.size() == 0){
+                btnCheckout.setEnabled(false);
+                btnClearCart.setEnabled(false);
+            }
             for (Carrinho c : carrinhos) {
                 Total += c.getProduto().getPreco() * c.getQuantidade();
                 TotalArtigos += c.getQuantidade();

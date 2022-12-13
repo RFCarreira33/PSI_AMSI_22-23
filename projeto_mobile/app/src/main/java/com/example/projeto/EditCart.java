@@ -1,5 +1,6 @@
 package com.example.projeto;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
@@ -89,8 +90,16 @@ public class EditCart extends AppCompatActivity implements DetailsListener {
     }
 
     public void onClickRemover(View view){
-        Singleton.getInstance(this).removeCartAPI(this, idProduto);
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Remover Produto");
+        builder.setMessage("Tem a certeza que pretende remover este produto do carrinho?");
+        builder.setPositiveButton("Sim", (dialog, which) -> {
+            Singleton.getInstance(this).removeCartAPI(this, idProduto);
+            finish();
+        });
+        builder.setNegativeButton("Não", (dialog, which) -> dialog.dismiss());
+        builder.show();
+
     }
 
     public void onClickApply(View view){
