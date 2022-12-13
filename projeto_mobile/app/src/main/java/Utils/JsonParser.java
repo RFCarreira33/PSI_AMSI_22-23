@@ -95,7 +95,7 @@ public class JsonParser {
 
     //endregion
 
-    //region Fatura
+    //region FaturaActivity
 
     public static ArrayList<Fatura> parserJsonFaturas(JSONArray response){
         ArrayList<Fatura> faturas = new ArrayList<>();
@@ -123,13 +123,13 @@ public class JsonParser {
         try {
             for (int i=0; i<response.length(); i++){
                 JSONObject jsonObject = (JSONObject) response.getJSONObject(i);
+                int id = jsonObject.getInt("id");
                 String produto_nome = jsonObject.getString("produto_nome");
                 String produto_referencia = jsonObject.getString("produto_referencia");
                 int id_Fatura = jsonObject.getInt("id_Fatura");
                 int quantidade = jsonObject.getInt("quantidade");
                 double valor = Double.parseDouble(jsonObject.getString("valor"));
                 double valorIva = Double.parseDouble(jsonObject.getString("valorIva"));
-                int id = jsonObject.getInt("id");
                 LinhaFatura linha = new LinhaFatura(id,id_Fatura,produto_nome, produto_referencia, quantidade, valor, valorIva);
                 linhas.add(linha);
             }

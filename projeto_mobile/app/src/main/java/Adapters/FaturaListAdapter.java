@@ -11,7 +11,6 @@ import com.example.projeto.R;
 
 import java.util.ArrayList;
 
-import Listeners.FaturasListener;
 import Models.Fatura;
 
 public class FaturaListAdapter extends BaseAdapter
@@ -62,16 +61,16 @@ public class FaturaListAdapter extends BaseAdapter
 
     private class ViewHolderLista{
 
-        private TextView tvFatura, tvTotal, tvData;
+        private TextView tvFatura, tvTotal, tvData ;
 
         public ViewHolderLista(View view){
             tvFatura = view.findViewById(R.id.tvFaturaId);
             tvTotal = view.findViewById(R.id.tvTotal);
-            tvData = view.findViewById(R.id.tvData);
+            tvData = view.findViewById(R.id.tvDataFatura);
         }
 
         public void update(Fatura fatura){
-            tvFatura.setText(String.format("Fatura Nº%s", String.valueOf(fatura.getId())));
+            tvFatura.setText(String.format("FaturaActivity Nº%s", String.valueOf(fatura.getId())));
             tvTotal.setText(String.format("Total: %s€", String.valueOf(fatura.getValorTotal())));
             tvData.setText(String.format("Compra efetuada a %s", fatura.getData()));
         }

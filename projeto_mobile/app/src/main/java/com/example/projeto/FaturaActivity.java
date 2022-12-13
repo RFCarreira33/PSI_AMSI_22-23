@@ -2,7 +2,6 @@ package com.example.projeto;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -11,35 +10,41 @@ import java.util.ArrayList;
 
 import Adapters.LinhaListAdapter;
 import Listeners.LinhasListener;
+import Models.Fatura;
 import Models.LinhaFatura;
 import Models.Singleton;
 
-public class Fatura extends AppCompatActivity implements LinhasListener {
+public class FaturaActivity extends AppCompatActivity implements LinhasListener {
 
     ListView lvLinhas;
-    TextView tvData, tvPrecoTotal, tvIvaTotal, tvMorada, tvNif, tvTelefone;
+    TextView tvDataFatura, tvPrecoTotal, tvIvaTotal, tvMorada, tvNif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fatura);
-        int idFatura = getIntent().getIntExtra("idFatura", 0);
-        setTitle("Fatura " + idFatura);
+        int idFatura = getIntent().getIntExtra("Fatura", 0);
+        setTitle("Fatura Nº" + idFatura);
         lvLinhas = findViewById(R.id.lvLinhas);
-        tvData = findViewById(R.id.tvData);
+        tvDataFatura = findViewById(R.id.tvDataFatura);
         tvPrecoTotal = findViewById(R.id.tvTotal);
         tvIvaTotal = findViewById(R.id.tvTotalIva);
         tvMorada = findViewById(R.id.tvMorada);
         tvNif = findViewById(R.id.tvNif);
-        tvTelefone = findViewById(R.id.tvTelefone);
         Singleton.getInstance(this).setLinhasListener(this);
         Singleton.getInstance(this).getLinhasFaturaAPI(this, idFatura);
+
     }
 
 
     @Override
-    public void onRefreshLinhasFatura(ArrayList<LinhaFatura> linhas) {
+    public void onRefreshLinhasFatura(ArrayList<LinhaFatura> linhas, Fatura fatura) {
         if (linhas != null) {
+            tvDataFatura.setText(String.format("Compra efetuada a %s", fatura.getData()));
+            tvPrecoTotal.setText(String.format("Total: %s€", fatura.getValorTotal()));
+            tvIvaTotal.setText(String.format("Iva: %s€", fatura.getValorIva()));
+            tvMorada.setText(fatura.getMorada());
+            tvNif.setText(String.format("NIF: %s", fatura.getNif()));
             lvLinhas.setAdapter(new LinhaListAdapter(this, linhas));
         }
     }

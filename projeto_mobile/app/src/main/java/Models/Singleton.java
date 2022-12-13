@@ -368,15 +368,18 @@ public class Singleton {
     public void getLinhasFaturaAPI(final Context context, final int id){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            dbHelper.getAllLinhasFaturaDB(id);
+            Fatura fatura = dbHelper.getFaturaDB(id);
+            ArrayList<LinhaFatura> linhas = dbHelper.getAllLinhasFaturaDB(id);
+            linhasListener.onRefreshLinhasFatura(linhas, fatura);
         }else {
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/faturas/"+ id +"&access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/faturas/"+ id +"?access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     ArrayList<LinhaFatura> linhasFaturas = JsonParser.parserJsonLinhas(response);
                     dbHelper.addLinhasDB(linhasFaturas);
+                    Fatura fatura = dbHelper.getFaturaDB(id);
                     if (linhasListener != null)
-                        linhasListener.onRefreshLinhasFatura(linhasFaturas);
+                        linhasListener.onRefreshLinhasFatura(linhasFaturas, fatura);
                 }
             }, new Response.ErrorListener() {
                 @Override

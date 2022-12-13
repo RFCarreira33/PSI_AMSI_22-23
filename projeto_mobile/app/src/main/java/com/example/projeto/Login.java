@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import Models.DBHelper;
 import Models.Singleton;
 
 public class Login extends AppCompatActivity {

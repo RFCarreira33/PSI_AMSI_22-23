@@ -13,16 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import Models.DBHelper;
 import Models.Fatura;
 import Utils.Public;
 
 public class PersonalArea extends AppCompatActivity {
 
     ActionBar actionBar = null;
+    DBHelper dbHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbHelper = new DBHelper(this);
         setContentView(R.layout.activity_personal_area);
         setTitle("Bem Vindo");
 
@@ -58,6 +61,7 @@ public class PersonalArea extends AppCompatActivity {
     }
 
     public void onCLickLogout(View view){
+        dbHelper.removeAllFaturas();
         SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(Public.TOKEN);

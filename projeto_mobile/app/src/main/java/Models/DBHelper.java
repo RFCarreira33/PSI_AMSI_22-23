@@ -33,16 +33,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 NIF+" TEXT NOT NULL,"+
                 MORADA+" TEXT NOT NULL,"+
                 DATA+" TEXT NOT NULL,"+
-                VALORTOTAL+" TEXT NOT NULL,"+
-                VALORIVA+" TEXT NOT NULL);";
+                VALORTOTAL+" DOUBLE NOT NULL,"+
+                VALORIVA+" DOUBLE NOT NULL);";
         sqLiteDatabase.execSQL(createTableFaturas);
 
         String createTableLinhasFatura = "CREATE TABLE "+TABLE_LINHAS+"("+ID+" INTEGER PRIMARY KEY,"+
                 ID_FATURA+" INTEGER NOT NULL,"+
                 PRODUTO+" TEXT NOT NULL,"+
                 REFERENCIA+" TEXT NOT NULL,"+
-                QUANTIDADE+" TEXT NOT NULL,"+
-                VALOR+" TEXT NOT NULL);";
+                QUANTIDADE+" INTEGER NOT NULL,"+
+                VALOR+" DOUBLE NOT NULL,"+
+                VALORIVA+" DOUBLE NOT NULL);";
+
         sqLiteDatabase.execSQL(createTableLinhasFatura);
 
     }
@@ -57,7 +59,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void addFaturasDB(ArrayList<Fatura> faturas){
-        onUpgrade(db,1,1);
         ContentValues values = new ContentValues();
         for(Fatura f:faturas) {
             values.put(ID, f.getId());
@@ -73,13 +74,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void addLinhasDB(ArrayList<LinhaFatura> linhas){
         ContentValues values = new ContentValues();
-        for (LinhaFatura l:linhas) {
+        for(LinhaFatura l:linhas) {
+            values.put(ID, l.getId());
+            values.put(ID_FATURA, l.getId_Fatura());
             values.put(PRODUTO, l.getProduto_nome());
             values.put(REFERENCIA, l.getProduto_referencia());
             values.put(QUANTIDADE, l.getQuantidade());
             values.put(VALOR, l.getValor());
             values.put(VALORIVA, l.getValorIva());
-            long id = db.insert(TABLE_LINHAS, null, values);
+            db.insert(TABLE_LINHAS, null, values);
         }
     }
 
@@ -98,10 +101,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return faturas;
     }
 
-    public ArrayList<LinhaFatura> getAllLinhasFaturaDB(int id_Fatura){
+    public ArrayList<LinhaFatura> getAllLinhasFaturaDB(int idFatura){
         ArrayList<LinhaFatura> linhas = new ArrayList<>();
-        Cursor cursor = db.query(TABLE_LINHAS, new String[]{ID, ID_FATURA, PRODUTO, REFERENCIA, QUANTIDADE, VALOR},
-                ID_FATURA+"=?", new String[]{String.valueOf(id_Fatura)}, null, null, ID);
+        Cursor cursor = db.query(TABLE_LINHAS, new String[]{ID, ID_FATURA, PRODUTO, REFERENCIA, QUANTIDADE, VALOR, VALORIVA},
+                ID_FATURA+"=?", new String[]{String.valueOf(idFatura)}, null, null, ID);
         if(cursor.moveToFirst()){
             do {
                 LinhaFatura auxLinha = new LinhaFatura(cursor.getInt(0), cursor.getInt(1), cursor.getString(2),
@@ -113,9 +116,26 @@ public class DBHelper extends SQLiteOpenHelper {
         return linhas;
     }
 
+    public Fatura getFaturaDB(int id){
+        Fatura fatura = null;
+        Cursor cursor = db.query(TABLE_FATURAS, new String[]{ID, NIF, MORADA, DATA, VALORTOTAL, VALORIVA},
+                ID+"=?", new String[]{String.valueOf(id)}, null, null, ID);
+        if(cursor.moveToFirst()){
+            fatura = new Fatura(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
+                    cursor.getString(3), cursor.getDouble(4), cursor.getDouble(5));
+            cursor.close();
+        }
+        return fatura;
+    }
+
+
     public void removeAllFaturas(){
         db.delete(TABLE_FATURAS, null, null);
         db.delete(TABLE_LINHAS, null, null);
+    }
+
+    public void dropDB(){
+        onUpgrade(db, 1, 1);
     }
 
 }

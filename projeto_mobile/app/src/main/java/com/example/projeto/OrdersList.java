@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -33,6 +34,15 @@ public class OrdersList extends Fragment implements FaturasListener {
         lvOrders = view.findViewById(R.id.lvOrders);
         Singleton.getInstance(getContext()).setFaturasListener(this);
         Singleton.getInstance(getContext()).getFaturasAPI(getContext());
+
+        lvOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(), FaturaActivity.class);
+                intent.putExtra("Fatura", (int) l);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
@@ -43,10 +53,4 @@ public class OrdersList extends Fragment implements FaturasListener {
         }
     }
 
-    public void onCLickDetails(View view) {
-        Intent i = new Intent(getContext(), Fatura.class);
-        i.putExtra("Fatura", 18);
-        startActivity(i);
-
-    }
 }

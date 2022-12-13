@@ -11,6 +11,7 @@ public class LinhaFatura {
         this.produto_referencia = produto_referencia;
         this.quantidade = quantidade;
         this.valor = valor;
+        this.id = id;
         this.id_Fatura = id_Fatura;
         this.valorIva = valorIva;
     }
