@@ -8,15 +8,6 @@
     android:padding="10dp"
     tools:context=".PersonalArea">
 
-    <TextView
-        android:id="@+id/tvNome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nome"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,9 +17,9 @@
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:onClick="onCLickLogout"
-            android:text="Logout" />
+            android:text="Terminar Sessão" />
 
         <Space
             android:layout_width="200dp"
@@ -45,19 +36,37 @@
         android:id="@+id/btnPersonal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Personal Data" />
+        android:enabled="false"
+        android:onClick="onClickSwitch"
+        android:text="Dados Pessoais" />
 
     <Button
         android:id="@+id/btnOrders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your Orders" />
+        android:onClick="onClickSwitch"
+        android:text="As Minhas Encomendas" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView2"
+        android:id="@+id/fragmentPersonal"
         android:name="com.example.projeto.DadosFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         tools:layout="@layout/fragment_dados" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentOrders"
+        android:name="com.example.projeto.OrdersList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:layout="@layout/fragment_orders" />
 
 </LinearLayout>

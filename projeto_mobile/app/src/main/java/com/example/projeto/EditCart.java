@@ -33,7 +33,7 @@ public class EditCart extends AppCompatActivity implements DetailsListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_cart);
         imgCapa = findViewById(R.id.imageCapa);
-        tvNome = findViewById(R.id.tvNome);
+        tvNome = findViewById(R.id.tvNomeDisplay);
         tvStock = findViewById(R.id.tvStock);
         tvPreco = findViewById(R.id.tvPreco);
         tvDescricao = findViewById(R.id.tvDescricao);

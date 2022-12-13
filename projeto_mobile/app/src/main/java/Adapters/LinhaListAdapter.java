@@ -11,7 +11,6 @@ import com.example.projeto.R;
 
 import java.util.ArrayList;
 
-import Models.Fatura;
 import Models.LinhaFatura;
 
 public class LinhaListAdapter extends BaseAdapter {
@@ -64,7 +63,7 @@ public class LinhaListAdapter extends BaseAdapter {
         private TextView tvNome, tvReferencia, tvQuantidade, tvPrecoTotal, tvIvaTotal;
 
         public ViewHolderLista(View view){
-            tvNome = view.findViewById(R.id.tvNome);
+            tvNome = view.findViewById(R.id.tvNomeDisplay);
             tvReferencia = view.findViewById(R.id.tvReferencia);
             tvQuantidade = view.findViewById(R.id.tvQuantidade);
             tvPrecoTotal = view.findViewById(R.id.tvPrecoTotal);

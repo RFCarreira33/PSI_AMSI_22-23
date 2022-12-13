@@ -72,7 +72,7 @@ public class CartListAdapter extends BaseAdapter {
 
         public ViewHolderLista(View view) {
             imgCapa = view.findViewById(R.id.imageCapa);
-            tvNome = view.findViewById(R.id.tvNome);
+            tvNome = view.findViewById(R.id.tvNomeDisplay);
             tvStock = view.findViewById(R.id.tvStock);
             tvPrecoTotal = view.findViewById(R.id.tvPrecoTotal);
             tvQuantidade = view.findViewById(R.id.tvQuantidade);

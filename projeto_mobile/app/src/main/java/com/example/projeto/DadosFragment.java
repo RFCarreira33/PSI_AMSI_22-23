@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import Listeners.DadosListener;
 import Models.Dados;
@@ -20,7 +19,7 @@ import Utils.Public;
 
 public class DadosFragment extends Fragment implements View.OnClickListener,DadosListener{
 
-    EditText tvNome,tvTelefone,tvNif,tvMorada,tvCodpostal;
+    EditText tvNome,tvTelefone,tvNif,tvMorada,tvCodpostal, tvNomeDisplay;
     Button btnSaveDados;
 
     public DadosFragment()
@@ -36,11 +35,12 @@ public class DadosFragment extends Fragment implements View.OnClickListener,Dado
         btnSaveDados = (Button) view.findViewById(R.id.btnSave);
         btnSaveDados.setOnClickListener(this);
 
-        tvNome = view.findViewById(R.id.tvNome);
+        tvNome = view.findViewById(R.id.tvNomeDisplay);
         tvTelefone = view.findViewById(R.id.tvTelefone);
         tvNif = view.findViewById(R.id.tvNif);
         tvMorada = view.findViewById(R.id.tvMorada);
         tvCodpostal = view.findViewById(R.id.tvCodPostal);
+        tvNomeDisplay = view.findViewById(R.id.tvNomeDisplay);
 
         Singleton.getInstance(getContext()).setDadosListener(this);
         Singleton.getInstance(getContext()).getDadosAPI(getContext());
@@ -49,13 +49,8 @@ public class DadosFragment extends Fragment implements View.OnClickListener,Dado
     }
 
     @Override
-    public void onRefreshDados(Models.Dados dado) {
-        String nome = dado.getNome();
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Public.USER_NOME, nome);
-        editor.apply();
-        tvNome.setText(nome);
+    public void onRefreshDados(Dados dado) {
+        tvNome.setText(dado.getNome());
         tvTelefone.setText(dado.getTelefone());
         tvNif.setText(dado.getNif());
         tvMorada.setText(dado.getMorada());

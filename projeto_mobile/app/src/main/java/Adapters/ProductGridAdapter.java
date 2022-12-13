@@ -74,7 +74,7 @@ public class ProductGridAdapter extends BaseAdapter
         public ViewHolderLista(View view) {
             imgCapa = view.findViewById(R.id.imageCapa);
             tvDetalhes = view.findViewById(R.id.tvDetalhes);
-            tvNome = view.findViewById(R.id.tvNome);
+            tvNome = view.findViewById(R.id.tvNomeDisplay);
             tvStock = view.findViewById(R.id.tvStock);
             tvPreco = view.findViewById(R.id.tvPrecoTotal);
 

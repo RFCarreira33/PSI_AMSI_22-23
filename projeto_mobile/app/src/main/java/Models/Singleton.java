@@ -207,6 +207,7 @@ public class Singleton {
                 public void onResponse(JSONObject response)
                 {
                     Dados dado = JsonParser.parserJsonDados(response);
+
                     if (dadosListener != null)
                     {
                         dadosListener.onRefreshDados(dado);

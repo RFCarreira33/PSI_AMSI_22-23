@@ -3,6 +3,7 @@ package com.example.projeto;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentContainerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,21 +12,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import Models.Dados;
-import Models.Singleton;
 import Models.DBHelper;
-import Models.Fatura;
 import Utils.Public;
 
 public class PersonalArea extends AppCompatActivity {
 
     ActionBar actionBar = null;
-    TextView tvNome;
     DBHelper dbHelper = null;
+    private Button btnOrder, btnPersonal;
+    private FragmentContainerView fragmentPersonal, fragmentOrders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +33,13 @@ public class PersonalArea extends AppCompatActivity {
         setContentView(R.layout.activity_personal_area);
         setTitle("Bem Vindo");
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+        btnOrder = findViewById(R.id.btnOrders);
+        btnPersonal = findViewById(R.id.btnPersonal);
+        fragmentPersonal = findViewById(R.id.fragmentPersonal);
+        fragmentOrders = findViewById(R.id.fragmentOrders);
+
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
-
-        tvNome = findViewById(R.id.tvNome);
-        tvNome.setText(sharedPreferences.getString(Public.USER_NOME, ""));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,6 +69,7 @@ public class PersonalArea extends AppCompatActivity {
     }
 
     public void onCLickLogout(View view){
+        //destroys everything from the user session
         dbHelper.removeAllFaturas();
         SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -76,6 +77,24 @@ public class PersonalArea extends AppCompatActivity {
         editor.apply();
         Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    public void onClickSwitch(View view){
+        int id = view.getId();
+        switch (id){
+            case R.id.btnOrders:
+                fragmentOrders.setVisibility(View.VISIBLE);
+                fragmentPersonal.setVisibility(View.GONE);
+                btnOrder.setEnabled(false);
+                btnPersonal.setEnabled(true);
+                break;
+            case R.id.btnPersonal:
+                fragmentOrders.setVisibility(View.GONE);
+                fragmentPersonal.setVisibility(View.VISIBLE);
+                btnPersonal.setEnabled(false);
+                btnOrder.setEnabled(true);
+                break;
+        }
     }
 
 }

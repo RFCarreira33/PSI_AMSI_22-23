@@ -14,7 +14,7 @@
         app:srcCompat="@drawable/gpu" />
 
     <TextView
-        android:id="@+id/tvNome"
+        android:id="@+id/tvNomeDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+    app:layout_anchorGravity="center"
     tools:context=".DadosFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,14 +16,14 @@
 
         <TextView
             android:id="@+id/labelNome"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="0"
             android:editable="false"
             android:text="Nome:" />
 
         <EditText
-            android:id="@+id/tvNome"
+            android:id="@+id/tvNomeDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,9 +40,9 @@
 
         <TextView
             android:id="@+id/labelTelefone"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="0"
             android:editable="false"
             android:text="Telefone:" />
 
@@ -62,9 +64,9 @@
 
         <TextView
             android:id="@+id/labelNif"
-            android:layout_width="56dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="0"
             android:editable="false"
             android:text="NIF:" />
 
@@ -86,9 +88,9 @@
 
         <TextView
             android:id="@+id/labelMorada"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="0"
             android:editable="false"
             android:text="Morada:" />
 
@@ -110,11 +112,11 @@
 
         <TextView
             android:id="@+id/labelCodPostal"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="0"
             android:editable="false"
-            android:text="CodPostal:" />
+            android:text="Codígo Postal:" />
 
         <EditText
             android:id="@+id/tvCodPostal"
@@ -132,7 +134,10 @@
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClick"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:foregroundGravity="center"
+        android:onClick="onClickUpdate"
         android:text="Guardar" />
 
 </LinearLayout>
