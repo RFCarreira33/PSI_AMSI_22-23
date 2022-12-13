@@ -42,26 +42,29 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         Intent i = null;
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+        boolean isLogged = sharedPreferences.contains(Public.TOKEN);
+        if(!isLogged) {
+            i = new Intent(this, Login.class);
+            startActivity(i);
+            return super.onOptionsItemSelected(item);
+        }
 
         switch (itemId){
             case R.id.app_bar_cart:
                 i = new Intent(this, ShoppingCart.class);
-                startActivity(i);
                 break;
+
             case R.id.app_bar_category:
                 i = new Intent(this, PersonalArea.class);
-                startActivity(i);
                 break;
+
             case R.id.app_bar_personalArea:
-                SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
-                if(sharedPreferences.contains(Public.TOKEN)){
-                    i = new Intent(this, PersonalArea.class);
-                    startActivity(i);
-                }else {
-                    i = new Intent(this, Login.class);
-                    startActivity(i);
-                }
+                i = new Intent(this, PersonalArea.class);
                 break;
+        }
+        if (i != null) {
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }

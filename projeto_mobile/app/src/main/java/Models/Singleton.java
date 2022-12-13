@@ -25,6 +25,8 @@ import java.util.Map;
 import Listeners.CartListener;
 import Listeners.DadosListener;
 import Listeners.DetailsListener;
+import Listeners.FaturasListener;
+import Listeners.LinhasListener;
 import Listeners.ProdutoListener;
 import Utils.JsonParser;
 import Utils.Public;
@@ -37,11 +39,15 @@ public class Singleton {
     private CartListener cartListener;
     private DetailsListener detailsListener;
     private DadosListener dadosListener;
+    private FaturasListener faturasListener;
+    private LinhasListener linhasListener;
+    private static DBHelper dbHelper;
 
     public static synchronized Singleton getInstance(Context context) {
         if (single_instance == null) {
             single_instance = new Singleton(context);
             volleyQueue = Volley.newRequestQueue(context);
+            dbHelper = new DBHelper(context);
         }
         return single_instance;
     }
@@ -62,6 +68,13 @@ public class Singleton {
 
     public void setDadosListener(DadosListener dadosListener) {
         this.dadosListener = dadosListener;
+    }
+    public void setFaturasListener(FaturasListener faturasListener) {
+        this.faturasListener = faturasListener;
+    }
+
+    public void setLinhasListener(LinhasListener linhasListener) {
+        this.linhasListener = linhasListener;
     }
 
     public void setCartListener(CartListener cartListener) {
@@ -394,4 +407,56 @@ public class Singleton {
     }
     //endregion Cart
 
+    //region OrdersList
+
+    public void getFaturasAPI(final Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(!JsonParser.isConnected(context)){
+            faturasListener.onRefreshFaturas(dbHelper.getAllFaturasDB());
+        }else {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/faturas?access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    ArrayList<Fatura> faturas = JsonParser.parserJsonFaturas(response);
+                    dbHelper.addFaturasDB(faturas);
+                    if (faturasListener != null)
+                        faturasListener.onRefreshFaturas(faturas);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(jsonArrayRequest);
+        }
+    }
+
+
+    public void getLinhasFaturaAPI(final Context context, final int id){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(!JsonParser.isConnected(context)){
+            Fatura fatura = dbHelper.getFaturaDB(id);
+            ArrayList<LinhaFatura> linhas = dbHelper.getAllLinhasFaturaDB(id);
+            linhasListener.onRefreshLinhasFatura(linhas, fatura);
+        }else {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/faturas/"+ id +"?access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    ArrayList<LinhaFatura> linhasFaturas = JsonParser.parserJsonLinhas(response);
+                    dbHelper.addLinhasDB(linhasFaturas);
+                    Fatura fatura = dbHelper.getFaturaDB(id);
+                    if (linhasListener != null)
+                        linhasListener.onRefreshLinhasFatura(linhasFaturas, fatura);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(jsonArrayRequest);
+        }
+    }
+    //endregion OrdersList
 }
