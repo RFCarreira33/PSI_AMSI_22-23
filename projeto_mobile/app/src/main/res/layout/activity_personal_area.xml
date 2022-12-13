@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:text="Nome"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,5 +52,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Your Orders" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView2"
+        android:name="com.example.projeto.DadosFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_dados" />
 
 </LinearLayout>

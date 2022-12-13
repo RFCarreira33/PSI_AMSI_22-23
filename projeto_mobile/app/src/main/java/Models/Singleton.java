@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Listeners.CartListener;
+import Listeners.DadosListener;
 import Listeners.DetailsListener;
 import Listeners.ProdutoListener;
 import Utils.JsonParser;
@@ -35,6 +36,7 @@ public class Singleton {
     private ProdutoListener produtoListener;
     private CartListener cartListener;
     private DetailsListener detailsListener;
+    private DadosListener dadosListener;
 
     public static synchronized Singleton getInstance(Context context) {
         if (single_instance == null) {
@@ -56,6 +58,10 @@ public class Singleton {
 
     public void setDetailsListener(DetailsListener detailsListener) {
         this.detailsListener = detailsListener;
+    }
+
+    public void setDadosListener(DadosListener dadosListener) {
+        this.dadosListener = dadosListener;
     }
 
     public void setCartListener(CartListener cartListener) {
@@ -166,6 +172,69 @@ public class Singleton {
                     params.put("telefone", user.getTelefone());
                     params.put("nif", user.getNif());
                     params.put("morada", user.getMorada());
+                    return params;
+                }
+            };
+            volleyQueue.add(stringRequest);
+        }
+
+    }
+
+    public void getDadosAPI(final Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(!JsonParser.isConnected(context))
+        {
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Public.apiURL + "/dados?access-token=" + sharedPreferences.getString(Public.TOKEN,null), null, new Response.Listener<JSONObject>()
+            {
+                @Override
+                public void onResponse(JSONObject response)
+                {
+                    Dados dado = JsonParser.parserJsonDados(response);
+                    if (dadosListener != null)
+                    {
+                        dadosListener.onRefreshDados(dado);
+                    }
+                }
+            }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error)
+                {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(jsonObjectRequest);
+        }
+    }
+
+    public void updateDadosAPI(final Context context, final Dados dados){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+        }else {
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, Public.apiURL + "/dados/update?access-token="+ sharedPreferences.getString(Public.TOKEN,null), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Override
+                protected java.util.Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("nome", dados.getNome());
+                    params.put("codPostal", dados.getCodPostal());
+                    params.put("telefone", dados.getTelefone());
+                    params.put("nif", dados.getNif());
+                    params.put("morada", dados.getMorada());
                     return params;
                 }
             };

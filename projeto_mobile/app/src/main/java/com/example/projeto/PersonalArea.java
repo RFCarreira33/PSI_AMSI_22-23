@@ -11,13 +11,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import Models.Dados;
+import Models.Singleton;
 import Utils.Public;
 
 public class PersonalArea extends AppCompatActivity {
 
     ActionBar actionBar = null;
+    TextView tvNome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +30,12 @@ public class PersonalArea extends AppCompatActivity {
         setContentView(R.layout.activity_personal_area);
         setTitle("Bem Vindo");
 
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
 
+        tvNome = findViewById(R.id.tvNome);
+        tvNome.setText(sharedPreferences.getString(Public.USER_NOME, ""));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,4 +72,5 @@ public class PersonalArea extends AppCompatActivity {
         Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_SHORT).show();
         finish();
     }
+
 }

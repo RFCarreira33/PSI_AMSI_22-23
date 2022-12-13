@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Models.Carrinho;
+import Models.Dados;
 import Models.Produto;
 import Models.Signup;
 
@@ -83,6 +84,22 @@ public class JsonParser {
             e.printStackTrace();
         }
         return carrinhos;
+    }
+
+    public static Dados parserJsonDados(JSONObject response){
+        Dados dadosAux = null;
+        try {
+            JSONObject dados = response;
+            String nome = dados.getString("nome");
+            String telefone = dados.getString("telefone");
+            String nif = dados.getString("nif");
+            String morada = dados.getString("morada");
+            String codPostal = dados.getString("codPostal");
+            dadosAux = new Dados(nome,telefone,nif,morada, codPostal);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return dadosAux;
     }
 
     public static boolean isConnected(Context context){

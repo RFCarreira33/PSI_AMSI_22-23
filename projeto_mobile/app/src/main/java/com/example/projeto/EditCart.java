@@ -13,10 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-
 import Listeners.DetailsListener;
-import Listeners.ProdutoListener;
 import Models.Produto;
 import Models.Singleton;
 import Utils.Public;
