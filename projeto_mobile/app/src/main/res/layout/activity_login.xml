@@ -23,8 +23,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/username"
-        android:minHeight="48dp"
-        android:text="cliente" />
+        android:minHeight="48dp" />
 
     <Space
         android:layout_width="match_parent"

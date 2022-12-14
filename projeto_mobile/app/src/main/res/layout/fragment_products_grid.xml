@@ -6,7 +6,7 @@
     tools:context=".ProductsGrid">
 
     <GridView
-        android:id="@+id/gvProdutos"
+        android:id="@+id/gvProdutosFiltrados"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="2" />

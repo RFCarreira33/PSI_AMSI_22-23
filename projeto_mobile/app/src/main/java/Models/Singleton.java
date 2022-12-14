@@ -2,7 +2,11 @@ package Models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,8 +18,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.projeto.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,6 +32,7 @@ import Listeners.CartListener;
 import Listeners.DadosListener;
 import Listeners.DetailsListener;
 import Listeners.FaturasListener;
+import Listeners.FilterListener;
 import Listeners.LinhasListener;
 import Listeners.ProdutoListener;
 import Utils.JsonParser;
@@ -41,6 +48,7 @@ public class Singleton {
     private DadosListener dadosListener;
     private FaturasListener faturasListener;
     private LinhasListener linhasListener;
+    private FilterListener filterListener;
     private static DBHelper dbHelper;
 
     public static synchronized Singleton getInstance(Context context) {
@@ -60,6 +68,10 @@ public class Singleton {
 
     public void setProdutoListener(ProdutoListener produtoListener) {
         this.produtoListener = produtoListener;
+    }
+
+    public void setFilterListener(FilterListener filterListener) {
+        this.filterListener = filterListener;
     }
 
     public void setDetailsListener(DetailsListener detailsListener) {
@@ -86,7 +98,7 @@ public class Singleton {
     //region Produto
     public void getAllProdutosAPI(final Context context) {
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/produtos", null, new Response.Listener<JSONArray>() {
                 @Override
@@ -98,7 +110,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
@@ -107,7 +119,7 @@ public class Singleton {
 
     public void getProdutoAPI(final Context context, int id) {
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Public.apiURL + "/produtos/" + id, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -119,7 +131,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonObjectRequest);
@@ -131,7 +143,7 @@ public class Singleton {
     //region User
     public void loginUserAPI(final Context context, final String credentials){
         if (!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(Request.Method.GET, Public.apiURL + "/user/login", new Response.Listener<String>() {
                 @Override
@@ -161,17 +173,17 @@ public class Singleton {
 
     public void createUserAPI(final Context context, final Signup user){
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Public.apiURL + "/user/register", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                    BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -197,7 +209,7 @@ public class Singleton {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context))
         {
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -218,7 +230,7 @@ public class Singleton {
                 @Override
                 public void onErrorResponse(VolleyError error)
                 {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonObjectRequest);
@@ -228,17 +240,17 @@ public class Singleton {
     public void updateDadosAPI(final Context context, final Dados dados){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(Request.Method.PUT, Public.apiURL + "/dados/update?access-token="+ sharedPreferences.getString(Public.TOKEN,null), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                    BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -263,14 +275,14 @@ public class Singleton {
     public void addCartAPI(final Context context, final int idProduto, final int quantidade){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(
                     Request.Method.POST, Public.apiURL + "/carrinho/create?access-token="+ sharedPreferences.getString(Public.TOKEN, null),
                     new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                    BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -293,7 +305,7 @@ public class Singleton {
    public void viewCartAPI(final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/carrinho?access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
                 @Override
@@ -305,7 +317,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
@@ -315,17 +327,17 @@ public class Singleton {
     public void clearCartAPI(final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(Request.Method.DELETE, Public.apiURL + "/carrinho/delete?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                    BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(stringRequest);
@@ -335,17 +347,17 @@ public class Singleton {
     public void removeCartAPI(final Context context, final int idProduto){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Public.apiURL + "/carrinho/remove?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                    BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -362,17 +374,17 @@ public class Singleton {
     public void buyCartAPI(final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(Request.Method.GET, Public.apiURL + "/carrinho/buy?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                    BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(stringRequest);
@@ -382,17 +394,17 @@ public class Singleton {
     public void updateCartAPI(final Context context, final int idProduto, final int quantidade){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
-            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
             StringRequest stringRequest = new StringRequest(Request.Method.PUT, Public.apiURL + "/carrinho/update?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                    BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -408,7 +420,7 @@ public class Singleton {
     }
     //endregion Cart
 
-    //region OrdersList
+    //region Faturas
 
     public void getFaturasAPI(final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
@@ -426,7 +438,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
@@ -453,11 +465,74 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
         }
     }
-    //endregion OrdersList
+    //endregion Faturas
+
+    //region Filters
+
+
+    public void getAllFiltersAPI(final Context context){
+        if (!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
+        }else {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Public.apiURL + "/filters", null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ArrayList<Categoria> categorias = null;
+                    ArrayList<Marca> marcas = null;
+                    try {
+                        JSONArray categoriasJson = response.getJSONArray("categorias");
+                        JSONArray marcasJson = response.getJSONArray("marcas");
+                        categorias = JsonParser.parserJsonCategorias(categoriasJson);
+                        marcas = JsonParser.parserJsonMarcas(marcasJson);
+                        dbHelper.addCategoriasDB(categorias);
+                        dbHelper.addMarcasDB(marcas);
+                        if (filterListener != null)
+                            filterListener.onRefreshFilters(categorias, marcas);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+            volleyQueue.add(jsonObjectRequest);
+        }
+    }
+
+    public void getQueryProdutosAPI(final Context context, @Nullable final String query){
+        if (!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
+        }else {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/produtos/search" + query, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    ArrayList<Produto> produtos = JsonParser.parserJsonProdutos(response);
+                    if (produtoListener != null)
+                        produtoListener.onRefreshProdutos(produtos);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+            volleyQueue.add(jsonArrayRequest);
+        }
+    }
+
+    public void BetterToast(Context context,String message){
+        message = message.replace("\"", ""); 
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+    //endregion Filters
 }

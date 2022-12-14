@@ -18,8 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:stateListAnimator="@null"
+            android:backgroundTint="#00FFFFFF"
             android:onClick="onCLickLogout"
-            android:text="Terminar Sessão" />
+            android:text="Terminar Sessão"
+            android:textColor="#FF0000"
+            app:cornerRadius="5dp"
+            app:iconTint="@color/red"
+            app:strokeColor="#D81010"
+            app:strokeWidth="1dp" />
 
         <Space
             android:layout_width="200dp"
@@ -28,15 +35,26 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="30dp" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
     <Button
         android:id="@+id/btnPersonal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
         android:onClick="onClickSwitch"
         android:text="Dados Pessoais" />
 
@@ -58,7 +76,7 @@
         android:name="com.example.projeto.DadosFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:layout="@layout/fragment_dados" />
 
     <androidx.fragment.app.FragmentContainerView

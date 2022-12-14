@@ -37,14 +37,14 @@ public class Login extends AppCompatActivity {
     public void onClickLogin(View view){
         String username = tbUsername.getText().toString();
         if(!isUsernameValid(username)){
-            Toast.makeText(this, "Username invalid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Username invalid", Toast.LENGTH_LONG).show();
             return;
         }
         String password = tbPassword.getText().toString();
         String credentials = username + ":" + password;
         String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         Singleton.getInstance(this).loginUserAPI(this,base64EncodedCredentials);
-        Toast.makeText(this, "Bem Vindo", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Bem Vindo", Toast.LENGTH_LONG).show();
         finish();
     }
 
