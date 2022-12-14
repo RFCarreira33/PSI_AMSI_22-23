@@ -14,10 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import Models.DBHelper;
+import Utils.JsonParser;
 import Utils.Public;
 
 public class PersonalArea extends AppCompatActivity {
@@ -33,13 +33,12 @@ public class PersonalArea extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         setContentView(R.layout.activity_personal_area);
         setTitle("Bem Vindo");
-
         btnOrder = findViewById(R.id.btnOrders);
         btnPersonal = findViewById(R.id.btnPersonal);
         fragmentPersonal = findViewById(R.id.fragmentPersonal);
         fragmentOrders = findViewById(R.id.fragmentOrders);
-
         actionBar = getSupportActionBar();
+        isConnected();
         actionBar.setDisplayShowHomeEnabled(true);
     }
     @Override
@@ -50,6 +49,7 @@ public class PersonalArea extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
@@ -59,12 +59,13 @@ public class PersonalArea extends AppCompatActivity {
             case R.id.app_bar_cart:
                 i = new Intent(this, ShoppingCart.class);
                 break;
-            case R.id.app_bar_category:
-                i = new Intent(this, Login.class);
+            case R.id.app_bar_search:
+                i = new Intent(this, FiltersActivity.class);
                 break;
         }
         if(i != null){
             startActivity(i);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -88,6 +89,13 @@ public class PersonalArea extends AppCompatActivity {
         builder.show();
 
         //destroys everything from the user session
+        dbHelper.removeAllFaturas();
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(Public.TOKEN);
+        editor.apply();
+        Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_LONG).show();
+        finish();
     }
 
     public void onClickSwitch(View view){
@@ -108,4 +116,16 @@ public class PersonalArea extends AppCompatActivity {
         }
     }
 
+    public void isConnected(){
+        if (JsonParser.isConnected(this)){
+            btnPersonal.setEnabled(true);
+        }else {
+            btnPersonal.setEnabled(false);
+        }
+        btnOrder.setEnabled(false);
+        fragmentOrders.setVisibility(View.VISIBLE);
+        fragmentPersonal.setVisibility(View.GONE);
+
+
+    }
 }

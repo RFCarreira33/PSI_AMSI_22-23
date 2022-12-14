@@ -30,7 +30,7 @@ public class ProductsGrid extends Fragment implements ProdutoListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products_grid, container, false);
-        gvProdutos = view.findViewById(R.id.gvProdutos);
+        gvProdutos = view.findViewById(R.id.gvProdutosFiltrados);
         Singleton.getInstance(getContext()).setProdutoListener(this);
         Singleton.getInstance(getContext()).getAllProdutosAPI(getContext());
 

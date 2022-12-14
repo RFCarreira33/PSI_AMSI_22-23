@@ -3,7 +3,6 @@ package com.example.projeto;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentContainerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import Utils.Public;
 
@@ -55,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 i = new Intent(this, ShoppingCart.class);
                 break;
 
-            case R.id.app_bar_category:
-                i = new Intent(this, PersonalArea.class);
+            case R.id.app_bar_search:
+                i = new Intent(this, FiltersActivity.class);
                 break;
 
             case R.id.app_bar_personalArea:

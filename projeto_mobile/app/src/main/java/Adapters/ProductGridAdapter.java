@@ -73,7 +73,6 @@ public class ProductGridAdapter extends BaseAdapter
 
         public ViewHolderLista(View view) {
             imgCapa = view.findViewById(R.id.imageCapa);
-            tvDetalhes = view.findViewById(R.id.tvDetalhes);
             tvNome = view.findViewById(R.id.tvNomeDisplay);
             tvStock = view.findViewById(R.id.tvStock);
             tvPreco = view.findViewById(R.id.tvPrecoTotal);
@@ -90,7 +89,6 @@ public class ProductGridAdapter extends BaseAdapter
                 tvStock.setText(R.string.outStock);
                 tvStock.setTextColor(Color.parseColor("#b00200"));
             }
-            tvDetalhes.setText(produto.getDetalhes());
             tvPreco.setText(String.format("%s €", produto.getPreco()));
             Glide.with(context)
                     .load(Public.imgURL +produto.getCapa())

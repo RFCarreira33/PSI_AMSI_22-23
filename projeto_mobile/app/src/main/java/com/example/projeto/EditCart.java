@@ -57,7 +57,7 @@ public class EditCart extends AppCompatActivity implements DetailsListener {
         if (produto != null) {
             //load produto into activity
             tvNome.setText(produto.getNome());
-            tvPreco.setText(String.valueOf(produto.getPreco()));
+            tvPreco.setText(String.format("%s €", String.valueOf(produto.getPreco())));
             tvDescricao.setText(produto.getDetalhes());
             if(produto.isEmStock()) {
                 tvStock.setText(R.string.inStock);

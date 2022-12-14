@@ -63,7 +63,6 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.app_bar, menu);
-        menu.removeItem(R.id.app_bar_cart);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -83,8 +82,8 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
             case R.id.app_bar_cart:
                 i = new Intent(this, ShoppingCart.class);
                 break;
-            case R.id.app_bar_category:
-                i = new Intent(this, Login.class);
+            case R.id.app_bar_search:
+                i = new Intent(this, FiltersActivity.class);
                 break;
             case R.id.app_bar_personalArea:
                 i = new Intent(this, PersonalArea.class);

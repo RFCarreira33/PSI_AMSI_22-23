@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -91,8 +90,8 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         }
 
         switch (itemId){
-            case R.id.app_bar_category:
-                i = new Intent(this, Login.class);
+            case R.id.app_bar_search:
+                i = new Intent(this, FiltersActivity.class);
                 break;
             case R.id.app_bar_personalArea:
                 i = new Intent(this, PersonalArea.class);
@@ -145,7 +144,7 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
                 Total += c.getProduto().getPreco() * c.getQuantidade();
                 TotalArtigos += c.getQuantidade();
             }
-            tvPrecoTotal.setText(String.format("%s€", Total));
+            tvPrecoTotal.setText(String.format("%s €", Total));
             tvNumeroArtigos.setText(String.format("Artigos: %s", TotalArtigos));
             lvCart.setAdapter(new CartListAdapter(this, carrinhos));
         }

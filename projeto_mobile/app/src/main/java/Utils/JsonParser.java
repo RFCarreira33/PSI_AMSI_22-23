@@ -14,10 +14,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Models.Carrinho;
+import Models.Categoria;
 import Models.Dados;
 import Models.DBHelper;
 import Models.Fatura;
 import Models.LinhaFatura;
+import Models.Marca;
 import Models.Produto;
 import Models.Signup;
 
@@ -154,6 +156,41 @@ public class JsonParser {
         }
         return linhas;
     }
+    //endregion
+
+    //region Filter
+
+    public static ArrayList<Categoria> parserJsonCategorias(JSONArray response){
+        ArrayList<Categoria> categorias = new ArrayList<>();
+        try {
+            for (int i=0; i<response.length(); i++){
+                JSONObject jsonObject = (JSONObject) response.getJSONObject(i);
+                int id = jsonObject.getInt("id");
+                String nome = jsonObject.getString("nome");
+                Categoria categoria = new Categoria(id,nome);
+                categorias.add(categoria);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return categorias;
+    }
+
+    public static ArrayList<Marca> parserJsonMarcas(JSONArray response){
+        ArrayList<Marca> marcas = new ArrayList<>();
+        try {
+            for (int i=0; i<response.length(); i++){
+                JSONObject jsonObject = (JSONObject) response.getJSONObject(i);
+                String nome = jsonObject.getString("nome");
+                Marca marca = new Marca(nome);
+                marcas.add(marca);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return marcas;
+    }
+
     //endregion
 
     public static boolean isConnected(Context context){
