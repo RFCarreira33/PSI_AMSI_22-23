@@ -112,7 +112,7 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         builder.setMessage("Tem a certeza que pretende limpar o carrinho?");
         builder.setPositiveButton("Sim", (dialogInterface, i) -> {
             Singleton.getInstance(this).clearCartAPI(this);
-            updateCarrinho();
+            finish();
         });
         builder.setNegativeButton("Não", (dialogInterface, i) -> dialogInterface.dismiss());
         builder.show();

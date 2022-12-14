@@ -43,8 +43,7 @@
         android:ems="10"
         android:hint="@string/pass"
         android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:text="cliente123" />
+        android:minHeight="48dp" />
 
     <Space
         android:layout_width="match_parent"
@@ -122,5 +121,5 @@
         android:backgroundTint="@color/purple_500"
         android:onClick="onClickRegister"
         android:shadowColor="@color/purple_500"
-        android:text="@string/register" />
+        android:text="Criar Conta" />
 </LinearLayout>
