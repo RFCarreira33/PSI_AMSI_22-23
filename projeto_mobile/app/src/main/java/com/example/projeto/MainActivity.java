@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import Utils.Public;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.drawable.logo);
+
     }
 
 
@@ -69,4 +71,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onClickbtn(View view) {
+        Intent intent = new Intent(this, QRReader.class);
+        startActivity(intent);
+    }
 }

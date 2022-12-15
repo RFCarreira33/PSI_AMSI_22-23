@@ -11,6 +11,14 @@
     android:paddingBottom="10dp">
 
 
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="QRCode Reader"
+        android:onClick="onClickbtn"/>
+
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="match_parent"
