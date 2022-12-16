@@ -11,6 +11,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
+import Listeners.FaturasListener;
+import Models.Fatura;
+import Models.Singleton;
+import Utils.JsonParser;
 import Utils.Public;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.app_bar, menu);
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+        if(!JsonParser.isConnected(this)){
+            menu.removeItem(R.id.app_bar_cart);
+            menu.removeItem(R.id.app_bar_search);
+            if (!sharedPreferences.contains(Public.TOKEN)) {
+                menu.removeItem(R.id.app_bar_personalArea);
+            }
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -42,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = null;
         SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
         boolean isLogged = sharedPreferences.contains(Public.TOKEN);
-        if(!isLogged) {
+        if(itemId != R.id.app_bar_search && !isLogged) {
             i = new Intent(this, Login.class);
             startActivity(i);
             return super.onOptionsItemSelected(item);

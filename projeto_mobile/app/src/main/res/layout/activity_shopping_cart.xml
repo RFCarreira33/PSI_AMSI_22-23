@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:gravity="end"
     android:orientation="vertical"
     android:padding="10dp"
+    app:layout_anchorGravity="start"
     tools:context=".ShoppingCart">
 
     <LinearLayout
@@ -78,9 +81,9 @@
             android:backgroundTint="#00FFFFFF"
             android:foregroundGravity="right"
             android:onClick="onClickClear"
+            android:stateListAnimator="@null"
             android:text="Limpar carrinho"
             android:textColor="@color/red"
-            android:stateListAnimator="@null"
             app:cornerRadius="5dp"
             app:icon="@drawable/ic_trash"
             app:iconPadding="0dp"
@@ -116,5 +119,25 @@
         android:id="@+id/lvCart"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_weight="0"
+        android:foregroundGravity="bottom|right">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="392dp"
+            android:clickable="true"
+            android:foregroundGravity="bottom|right"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_qrcode" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
