@@ -430,10 +430,19 @@ public class Singleton {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/faturas?access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    ArrayList<Fatura> faturas = JsonParser.parserJsonFaturas(response);
-                    dbHelper.addFaturasDB(faturas);
-                    if (faturasListener != null)
-                        faturasListener.onRefreshFaturas(faturas);
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            JSONObject fatura = jsonObject.getJSONObject("fatura");
+                            JSONArray linhas = jsonObject.getJSONArray("linhas");
+                            Fatura auxFatura = JsonParser.parserJsonFatura(fatura);
+                            ArrayList<LinhaFatura> auxLinhas = JsonParser.parserJsonLinhas(linhas);
+                            dbHelper.addFaturaDB(auxFatura);
+                            dbHelper.addLinhasDB(auxLinhas);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -445,30 +454,15 @@ public class Singleton {
         }
     }
 
+    public void getFaturasDB(final  Context context){
+        if(faturasListener != null){
+            faturasListener.onRefreshFaturas(dbHelper.getAllFaturasDB());
+        }
+    }
 
-    public void getLinhasFaturaAPI(final Context context, final int id){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
-        if(!JsonParser.isConnected(context)){
-            Fatura fatura = dbHelper.getFaturaDB(id);
-            ArrayList<LinhaFatura> linhas = dbHelper.getAllLinhasFaturaDB(id);
-            linhasListener.onRefreshLinhasFatura(linhas, fatura);
-        }else {
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/faturas/"+ id +"?access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    ArrayList<LinhaFatura> linhasFaturas = JsonParser.parserJsonLinhas(response);
-                    dbHelper.addLinhasDB(linhasFaturas);
-                    Fatura fatura = dbHelper.getFaturaDB(id);
-                    if (linhasListener != null)
-                        linhasListener.onRefreshLinhasFatura(linhasFaturas, fatura);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-            volleyQueue.add(jsonArrayRequest);
+    public void getFaturaDB(final Context context, final int id){
+        if (linhasListener != null){
+            linhasListener.onRefreshLinhasFatura(dbHelper.getAllLinhasFaturaDB(id), dbHelper.getFaturaDB(id));
         }
     }
     //endregion Faturas
@@ -490,8 +484,6 @@ public class Singleton {
                         JSONArray marcasJson = response.getJSONArray("marcas");
                         categorias = JsonParser.parserJsonCategorias(categoriasJson);
                         marcas = JsonParser.parserJsonMarcas(marcasJson);
-                        dbHelper.addCategoriasDB(categorias);
-                        dbHelper.addMarcasDB(marcas);
                         if (filterListener != null)
                             filterListener.onRefreshFilters(categorias, marcas);
 

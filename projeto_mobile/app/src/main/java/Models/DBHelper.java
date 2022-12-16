@@ -47,15 +47,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(createTableLinhasFatura);
 
-        String createTableCategorias = "CREATE TABLE "+TABLE_CATEGORIAS+"("+ID+" INTEGER PRIMARY KEY,"+
-                NOME+" TEXT NOT NULL);";
-
-        sqLiteDatabase.execSQL(createTableCategorias);
-
-        String createTableMarcas = "CREATE TABLE "+TABLE_MARCAS+"("+ID+" INTEGER PRIMARY KEY,"+
-                NOME+" TEXT NOT NULL);";
-
-        sqLiteDatabase.execSQL(createTableMarcas);
     }
 
     @Override
@@ -64,16 +55,11 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(deleteSQLTableFaturas);
         String deleteSQLTableLinhasFatura = "DROP TABLE IF EXISTS "+TABLE_LINHAS;
         sqLiteDatabase.execSQL(deleteSQLTableLinhasFatura);
-        String deleteSQLTableCategorias = "DROP TABLE IF EXISTS "+TABLE_CATEGORIAS;
-        sqLiteDatabase.execSQL(deleteSQLTableCategorias);
-        String deleteSQLTableMarcas = "DROP TABLE IF EXISTS "+TABLE_MARCAS;
-        sqLiteDatabase.execSQL(deleteSQLTableMarcas);
         this.onCreate(sqLiteDatabase);
     }
 
-    public void addFaturasDB(ArrayList<Fatura> faturas){
+    public void addFaturaDB(Fatura f){
         ContentValues values = new ContentValues();
-        for(Fatura f:faturas) {
             values.put(ID, f.getId());
             values.put(NIF, f.getNif());
             values.put(MORADA, f.getMorada());
@@ -81,7 +67,6 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(VALORTOTAL, f.getValorTotal());
             values.put(VALORIVA, f.getValorIva());
             db.insert(TABLE_FATURAS, null, values);
-        }
 
     }
 
@@ -96,24 +81,6 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(VALOR, l.getValor());
             values.put(VALORIVA, l.getValorIva());
             db.insert(TABLE_LINHAS, null, values);
-        }
-    }
-
-    public void addCategoriasDB(ArrayList<Categoria> categorias){
-        ContentValues values = new ContentValues();
-        for(Categoria c:categorias) {
-            values.put(NOME, c.getNome());
-            values.put(ID, c.getId());
-            db.insert(TABLE_CATEGORIAS, null, values);
-        }
-    }
-
-    public void addMarcasDB(ArrayList<Marca> marcas){
-        ContentValues values = new ContentValues();
-        for(Marca m:marcas) {
-            values.put(ID, m.getId());
-            values.put(NOME, m.getNome());
-            db.insert(TABLE_MARCAS, null, values);
         }
     }
 

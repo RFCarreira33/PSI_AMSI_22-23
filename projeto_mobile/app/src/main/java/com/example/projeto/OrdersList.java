@@ -33,7 +33,7 @@ public class OrdersList extends Fragment implements FaturasListener {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         lvOrders = view.findViewById(R.id.lvOrders);
         Singleton.getInstance(getContext()).setFaturasListener(this);
-        Singleton.getInstance(getContext()).getFaturasAPI(getContext());
+        Singleton.getInstance(getContext()).getFaturasDB(getContext());
 
         lvOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
