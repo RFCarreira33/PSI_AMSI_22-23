@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             menu.removeItem(R.id.app_bar_cart);
             menu.removeItem(R.id.app_bar_search);
             if (!sharedPreferences.contains(Public.TOKEN)) {
+                Singleton.getInstance(this).getFaturasAPI(this);
                 menu.removeItem(R.id.app_bar_personalArea);
             }
         }
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
         int itemId = item.getItemId();
         Intent i = null;
-        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
         boolean isLogged = sharedPreferences.contains(Public.TOKEN);
         if(itemId != R.id.app_bar_search && !isLogged) {
             i = new Intent(this, Login.class);

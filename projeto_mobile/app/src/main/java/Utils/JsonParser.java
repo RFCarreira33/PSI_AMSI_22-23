@@ -119,7 +119,7 @@ public class JsonParser {
         Fatura auxFatura = null;
         try {
             int id = response.getInt("id");
-            String data = response.getString("data");
+            String data = response.getString("dataFatura");
             double valorTotal = Double.parseDouble(response.getString("valorTotal"));
             double ivaTotal = Double.parseDouble(response.getString("valorIva"));
             String morada = response.getString("morada");

@@ -87,15 +87,6 @@ public class PersonalArea extends AppCompatActivity {
             dialog.dismiss();
         });
         builder.show();
-
-        //destroys everything from the user session
-        dbHelper.removeAllFaturas();
-        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(Public.TOKEN);
-        editor.apply();
-        Toast.makeText(this, "Logout efetuado com sucesso", Toast.LENGTH_LONG).show();
-        finish();
     }
 
     public void onClickSwitch(View view){
