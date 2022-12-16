@@ -32,6 +32,12 @@
 >
 > - [Android Studio](https://developer.android.com/)
 > - [SQLite](https://www.sqlite.org/)
+> - [Glide](https://github.com/bumptech/glide)
+> - [Zxing (QRCode Reader)](https://github.com/zxing-js/library)
+
+### REST API
+
+> Foi desenvolvida uma API na [aplicação Web](https://github.com/RFCarreira33/PSI_PLSI_22-23) para auxiliar na passagem de dados entre a aplicação Mobile e Web vice versa. [Documentação dos Endpoints](https://github.com/RFCarreira33/PSI_PLSI_22-23/tree/development/projeto_final/backend/modules/api)
 
 ### Credenciais de utilizadores
 
