@@ -110,7 +110,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_SHORT).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
