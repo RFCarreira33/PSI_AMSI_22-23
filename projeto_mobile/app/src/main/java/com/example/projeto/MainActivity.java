@@ -57,9 +57,14 @@ public class MainActivity extends AppCompatActivity {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            } else {
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                longitudes.setText("Permissão negada");
+                latitudes.setText("Permissão negada");
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+            }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
