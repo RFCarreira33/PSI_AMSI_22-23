@@ -3,11 +3,8 @@ package com.example.projeto;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-<<<<<<< Updated upstream
-=======
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentContainerView;
->>>>>>> Stashed changes
 
 import android.Manifest;
 import android.annotation.SuppressLint;
