@@ -1,5 +1,12 @@
 package com.example.projeto;
 
+import static java.lang.Math.acos;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toRadians;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +45,10 @@ import Utils.Public;
 public class MainActivity extends AppCompatActivity {
 
     ActionBar actionBar = null;
-    TextView latitudes, longitudes;
+    TextView latitudes, longitudes, distancia;
+    private static final int EARTH_RADIUS = 6371;
+    double latitude = 0;
+    double longitude = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         latitudes = findViewById(R.id.latitude);
         longitudes = findViewById(R.id.longitude);
+        distancia = findViewById(R.id.distancia);
 
         try {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -66,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
             }
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
 
                 longitudes.setText(String.valueOf(longitude));
                 latitudes.setText(String.valueOf(latitude));
@@ -75,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        double d = calcDistancia(latitude, longitude);
+        distancia.setText(String.valueOf(Math.round(d)));  //KM
+
 
 
     }
@@ -121,5 +136,24 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, QRReader.class);
         startActivity(intent);
     }
-    
+
+    public double calcDistancia(double lat2, double lon2 )
+    {
+        lat2 = 24.288103439276064; // teste
+        lon2 = 45.63301192299735; // teste
+
+        double R = 6371e3; // metres
+        double φ1 = latitude * Math.PI/180; // φ, λ in radians
+        double φ2 = lat2 * Math.PI/180;
+        double Δφ = (lat2-latitude) * Math.PI/180;
+        double Δλ = (lon2-(longitude * Math.PI/180)) * Math.PI/180;
+
+        double a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                        Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        double d = R * c / 1000; // in metres
+        return d;
+    }
 }
