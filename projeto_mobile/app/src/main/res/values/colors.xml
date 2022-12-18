@@ -8,5 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF1100</color>
+<<<<<<< Updated upstream
     <color name="danger">#D81010</color>
+=======
+    <color name="blue_300">#4FC3F7</color>
+>>>>>>> Stashed changes
 </resources>
