@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:editable="false"
-            android:text="Numer"
+            android:text="Artigos: 0"
             android:textSize="20sp" />
 
     </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ import Adapters.CartListAdapter;
 import Listeners.CartListener;
 import Models.Carrinho;
 import Models.Singleton;
+import Utils.JsonParser;
 import Utils.Public;
 
 public class ShoppingCart extends AppCompatActivity implements CartListener {
@@ -43,6 +45,12 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         btnCheckout = findViewById(R.id.btnComprar);
         btnClearCart = findViewById(R.id.btnClear);
 
+        if(!JsonParser.isConnected(this)){
+            btnCheckout.setEnabled(false);
+            btnClearCart.setEnabled(false);
+            Toast.makeText(this, R.string.sem_internet, Toast.LENGTH_SHORT).show();
+            return;
+        }
         lvCart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -130,9 +138,6 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         builder.show();
     }
 
-
-
-
     @Override
     public void onRefreshCart(ArrayList<Carrinho> carrinhos) {
         if(carrinhos != null) {
@@ -149,6 +154,4 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
             lvCart.setAdapter(new CartListAdapter(this, carrinhos));
         }
     }
-
-
 }

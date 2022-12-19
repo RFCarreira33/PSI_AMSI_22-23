@@ -14,12 +14,10 @@
     <string name="newAccount">Criar uma Conta</string>
     <string name="inStock">Em Stock</string>
     <string name="outStock">Fora de Stock</string>
-    <string name="sem_internet">No Internet Connection</string>
+    <string name="sem_internet">Sem ligação a Internet</string>
     <string name="EditCart">Editar Carrinho</string>
     <string name="Categorias">Categorias</string>
     <string name="Marcas">Marcas</string>
     <string name="Ordem">Ordem</string>
     <string name="Procurar">Escreve o que procuras...</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

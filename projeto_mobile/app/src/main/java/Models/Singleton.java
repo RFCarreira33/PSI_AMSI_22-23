@@ -2,8 +2,6 @@ package Models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,9 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.projeto.R;
-import com.google.android.material.snackbar.Snackbar;
 
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,14 +50,14 @@ public class Singleton {
 
     public static synchronized Singleton getInstance(Context context) {
         if (single_instance == null) {
-            single_instance = new Singleton(context);
+            single_instance = new Singleton();
             volleyQueue = Volley.newRequestQueue(context);
             dbHelper = new DBHelper(context);
         }
         return single_instance;
     }
 
-    private Singleton(Context context) {
+    private Singleton() {
         produtos = new ArrayList<>();
     }
 
@@ -111,7 +107,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
@@ -183,7 +179,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -230,7 +226,7 @@ public class Singleton {
                 @Override
                 public void onErrorResponse(VolleyError error)
                 {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonObjectRequest);
@@ -250,7 +246,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -287,7 +283,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println(error.getMessage());
+                    //System.out.println(error.getMessage());
                 }
             }){
                 @Override
@@ -317,7 +313,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
@@ -337,7 +333,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(stringRequest);
@@ -357,7 +353,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -384,7 +380,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(stringRequest);
@@ -404,7 +400,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -424,9 +420,10 @@ public class Singleton {
 
     public void getFaturasAPI(final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
-        if(!JsonParser.isConnected(context)){
+        if(!JsonParser.isConnected(context) && sharedPreferences.contains(Public.TOKEN)){
             faturasListener.onRefreshFaturas(dbHelper.getAllFaturasDB());
         }else {
+            dbHelper.removeAllFaturas();
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Public.apiURL + "/faturas?access-token="+ sharedPreferences.getString(Public.TOKEN, null), null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -450,7 +447,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
@@ -492,7 +489,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonObjectRequest);
@@ -524,7 +521,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);

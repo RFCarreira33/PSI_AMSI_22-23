@@ -22,6 +22,7 @@ import Listeners.FilterListener;
 import Models.Categoria;
 import Models.Marca;
 import Models.Singleton;
+import Utils.JsonParser;
 import Utils.Public;
 
 public class FiltersActivity extends AppCompatActivity implements FilterListener{
@@ -42,6 +43,9 @@ public class FiltersActivity extends AppCompatActivity implements FilterListener
         btnSearch = findViewById(R.id.btnSearch);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
+        if(!JsonParser.isConnected(this)){
+            btnSearch.setEnabled(false);
+        }
 
         Singleton.getInstance(this).setFilterListener(this);
         Singleton.getInstance(this).getALlFiltersDB(this);

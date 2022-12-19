@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             client.subscribe("promo", 1);
         }
         }catch(Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }

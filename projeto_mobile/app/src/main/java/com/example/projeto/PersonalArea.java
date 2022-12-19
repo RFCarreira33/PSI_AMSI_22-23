@@ -116,7 +116,5 @@ public class PersonalArea extends AppCompatActivity {
         btnOrder.setEnabled(false);
         fragmentOrders.setVisibility(View.VISIBLE);
         fragmentPersonal.setVisibility(View.GONE);
-
-
     }
 }
