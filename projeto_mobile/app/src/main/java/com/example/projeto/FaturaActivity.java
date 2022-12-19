@@ -32,7 +32,7 @@ public class FaturaActivity extends AppCompatActivity implements LinhasListener 
         tvMorada = findViewById(R.id.tvMorada);
         tvNif = findViewById(R.id.tvNif);
         Singleton.getInstance(this).setLinhasListener(this);
-        Singleton.getInstance(this).getLinhasFaturaAPI(this, idFatura);
+        Singleton.getInstance(this).getFaturaDB(this, idFatura);
 
     }
 

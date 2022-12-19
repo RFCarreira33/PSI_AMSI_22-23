@@ -1,5 +1,6 @@
 package com.example.projeto;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,12 +13,10 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import Models.DBHelper;
 import Models.Singleton;
 
 public class Login extends AppCompatActivity {
     private EditText tbUsername, tbPassword;
-    private static RequestQueue volleyQueue = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         tbUsername = findViewById(R.id.tbUsername);
         tbPassword = findViewById(R.id.tbPass);
-        volleyQueue = Volley.newRequestQueue(this);
 
     }
 
@@ -44,7 +42,6 @@ public class Login extends AppCompatActivity {
         String credentials = username + ":" + password;
         String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         Singleton.getInstance(this).loginUserAPI(this,base64EncodedCredentials);
-        Toast.makeText(this, "Bem Vindo", Toast.LENGTH_LONG).show();
         finish();
     }
 

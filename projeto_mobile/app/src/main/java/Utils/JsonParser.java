@@ -113,48 +113,43 @@ public class JsonParser {
     }
     //endregion
 
-    //region FaturaActivity
+    //region Fatura
 
-    public static ArrayList<Fatura> parserJsonFaturas(JSONArray response){
-        ArrayList<Fatura> faturas = new ArrayList<>();
+    public static Fatura parserJsonFatura(JSONObject response){
+        Fatura auxFatura = null;
         try {
-            for (int i=0; i<response.length(); i++){
-                JSONObject jsonObject = (JSONObject) response.getJSONObject(i);
-                int id = jsonObject.getInt("id");
-                String data = jsonObject.getString("data");
-                double valorTotal = Double.parseDouble(jsonObject.getString("valorTotal"));
-                double ivaTotal = Double.parseDouble(jsonObject.getString("valorIva"));
-                String morada = jsonObject.getString("morada");
-                String nif = jsonObject.getString("nif");
-                Fatura auxFatura = new Fatura(id,nif,morada,data,valorTotal,ivaTotal);
-                faturas.add(auxFatura);
-            }
-
+            int id = response.getInt("id");
+            String data = response.getString("dataFatura");
+            double valorTotal = Double.parseDouble(response.getString("valorTotal"));
+            double ivaTotal = Double.parseDouble(response.getString("valorIva"));
+            String morada = response.getString("morada");
+            String nif = response.getString("nif");
+            auxFatura = new Fatura(id,nif,morada,data,valorTotal,ivaTotal);
         }catch (JSONException e){
             System.out.println(e.getMessage());
         }
-        return faturas;
+        return auxFatura;
     }
 
     public static ArrayList<LinhaFatura> parserJsonLinhas(JSONArray response){
-        ArrayList<LinhaFatura> linhas = new ArrayList<>();
+        ArrayList<LinhaFatura> linhasFatura = new ArrayList<>();
         try {
             for (int i=0; i<response.length(); i++){
-                JSONObject jsonObject = (JSONObject) response.getJSONObject(i);
-                int id = jsonObject.getInt("id");
-                String produto_nome = jsonObject.getString("produto_nome");
-                String produto_referencia = jsonObject.getString("produto_referencia");
-                int id_Fatura = jsonObject.getInt("id_Fatura");
-                int quantidade = jsonObject.getInt("quantidade");
-                double valor = Double.parseDouble(jsonObject.getString("valor"));
-                double valorIva = Double.parseDouble(jsonObject.getString("valorIva"));
-                LinhaFatura linha = new LinhaFatura(id,id_Fatura,produto_nome, produto_referencia, quantidade, valor, valorIva);
-                linhas.add(linha);
+                JSONObject linha = (JSONObject) response.getJSONObject(i);
+                int id = linha.getInt("id");
+                int idFatura = linha.getInt("id_Fatura");
+                String nome = linha.getString("produto_nome");
+                String referencia = linha.getString("produto_referencia");
+                double iva = Double.parseDouble(linha.getString("valorIva"));
+                double preco = Double.parseDouble(linha.getString("valor"));
+                int quantidade = linha.getInt("quantidade");
+                LinhaFatura linhaFatura = new LinhaFatura(id, idFatura, nome, referencia, quantidade, preco, iva);
+                linhasFatura.add(linhaFatura);
             }
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        return linhas;
+    }catch (JSONException e){
+        System.out.println(e.getMessage());
+    }
+        return linhasFatura;
     }
     //endregion
 
