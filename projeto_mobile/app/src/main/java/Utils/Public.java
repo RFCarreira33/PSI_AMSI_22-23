@@ -1,8 +1,9 @@
 package Utils;
 
 public class Public {
-    public static final String apiURL="http://10.0.2.2:8080/api";
-    public static final String imgURL="http://10.0.2.2:8080/img/";
+    public static final String IP = "10.0.2.2";
+    public static final String apiURL= String.format("http://%s:8080/api", IP);
+    public static final String imgURL= String.format("http://%s:8080/img/", IP);
     public static final String SHARED_FILE="DADOS_USER";
     public static final String TOKEN = "TOKEN";
     public static final String USER_NOME = "USER_NOME";

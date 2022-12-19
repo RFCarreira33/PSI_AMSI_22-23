@@ -182,7 +182,7 @@ public class JsonParser {
             for (int i=0; i<response.length(); i++){
                 JSONObject jsonObject = (JSONObject) response.getJSONObject(i);
                 String nome = jsonObject.getString("nome");
-                Marca marca = new Marca(nome);
+                Marca marca = new Marca(i+1,nome);
                 marcas.add(marca);
             }
         }catch (JSONException e){

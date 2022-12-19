@@ -159,6 +159,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return fatura;
     }
 
+    public ArrayList<Categoria> getAllCategoriasDB(){
+        ArrayList<Categoria> categorias = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_CATEGORIAS, new String[]{ID, NOME},
+                null, null, null, null, ID);
+        if(cursor.moveToFirst()){
+            do {
+                Categoria auxCategoria = new Categoria(cursor.getInt(0), cursor.getString(1));
+                categorias.add(auxCategoria);
+            }while (cursor.moveToNext());
+            cursor.close();
+        }
+        return categorias;
+    }
+
+    public ArrayList<Marca> getAllMarcasDB(){
+        ArrayList<Marca> marcas = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_MARCAS, new String[]{ID, NOME},
+                null, null, null, null, ID);
+        if(cursor.moveToFirst()){
+            do {
+                Marca auxMarca = new Marca(cursor.getInt(0), cursor.getString(1));
+                marcas.add(auxMarca);
+            }while (cursor.moveToNext());
+            cursor.close();
+        }
+        return marcas;
+    }
+
+    public void removeAllFilters(){
+        db.delete(TABLE_CATEGORIAS, null, null);
+        db.delete(TABLE_MARCAS, null, null);
+    }
 
     public void removeAllFaturas(){
         db.delete(TABLE_FATURAS, null, null);

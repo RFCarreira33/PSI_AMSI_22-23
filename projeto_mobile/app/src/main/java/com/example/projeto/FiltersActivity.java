@@ -44,7 +44,7 @@ public class FiltersActivity extends AppCompatActivity implements FilterListener
         actionBar.setDisplayShowHomeEnabled(true);
 
         Singleton.getInstance(this).setFilterListener(this);
-        Singleton.getInstance(this).getAllFiltersAPI(this);
+        Singleton.getInstance(this).getALlFiltersDB(this);
     }
 
     @Override

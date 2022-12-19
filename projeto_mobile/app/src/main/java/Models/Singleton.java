@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.projeto.R;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,7 +111,7 @@ public class Singleton {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_LONG).show();
                 }
             });
             volleyQueue.add(jsonArrayRequest);
@@ -480,6 +481,7 @@ public class Singleton {
         if (!JsonParser.isConnected(context)){
             Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
+            dbHelper.removeAllFilters();
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Public.apiURL + "/filters", null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -509,6 +511,17 @@ public class Singleton {
         }
     }
 
+    public void getALlFiltersDB(final Context context){
+        ArrayList<Categoria> categorias = dbHelper.getAllCategoriasDB();
+        ArrayList<Marca> marcas = dbHelper.getAllMarcasDB();
+        if (categorias.size() == 0 || marcas.size() == 0){
+            getAllFiltersAPI(context);
+        }else {
+            if (filterListener != null)
+                filterListener.onRefreshFilters(categorias, marcas);
+        }
+    }
+
     public void getQueryProdutosAPI(final Context context, @Nullable final String query){
         if (!JsonParser.isConnected(context)){
             Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
@@ -530,9 +543,10 @@ public class Singleton {
         }
     }
 
+    //endregion Filters
+
     public void BetterToast(Context context,String message){
-        message = message.replace("\"", ""); 
+        message = message.replace("\"", "");
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
-    //endregion Filters
 }

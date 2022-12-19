@@ -3,12 +3,11 @@ package Models;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Marca {
-    private static final AtomicInteger count = new AtomicInteger(0);
     int id;
     String nome;
 
-    public Marca(String nome) {
-        this.id = count.incrementAndGet();
+    public Marca( int id, String nome) {
+        this.id = id;
         this.nome = nome;
     }
 
