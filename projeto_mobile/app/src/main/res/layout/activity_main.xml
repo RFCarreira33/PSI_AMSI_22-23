@@ -13,6 +13,16 @@
     android:paddingBottom="10dp"
     app:layout_anchorGravity="start">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:layout_weight="0"
+        android:onClick="onClickbtn"
+        android:src="@drawable/camera_foreground"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/imageView7"

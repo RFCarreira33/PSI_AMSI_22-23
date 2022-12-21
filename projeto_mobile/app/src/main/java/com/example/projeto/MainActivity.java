@@ -15,8 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -129,4 +128,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onClickbtn(View view) {
+        Intent intent = new Intent(this, QRReader.class);
+        startActivity(intent);
+    }
 }
