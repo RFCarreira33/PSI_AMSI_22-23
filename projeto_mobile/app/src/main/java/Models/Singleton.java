@@ -268,6 +268,36 @@ public class Singleton {
         }
 
     }
+
+    public void getLojaMaisPerto(final Context context, final double longitude, final double latitude,final int idProduto){
+
+        if(!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
+        }else {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Public.apiURL + "/produtos/location" ,new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    BetterToast(context, response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_LONG).show();
+                }
+            }){
+                @Override
+                protected java.util.Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("latitude", String.valueOf(latitude));
+                    params.put("longitude", String.valueOf(longitude));
+                    params.put("idProduto", String.valueOf(idProduto));
+                    return params;
+                }
+            };
+            volleyQueue.add(stringRequest);
+        }
+
+    }
     //endregion User
 
     //region Cart

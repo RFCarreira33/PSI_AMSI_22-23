@@ -10,38 +10,6 @@
     android:paddingEnd="10dp"
     android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/longitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/latitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/distancia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="TextView" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:layout_weight="0"
-        android:onClick="onClickbtn"
-        android:src="@drawable/camera_foreground"
-        tools:ignore="SpeakableTextPresentCheck" />
-
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="match_parent"

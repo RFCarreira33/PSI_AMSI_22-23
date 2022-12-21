@@ -3,10 +3,16 @@ package com.example.projeto;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +39,11 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
     private EditText numQuant;
     private Button btnCart;
     ActionBar actionBar = null;
+    private static final int EARTH_RADIUS = 6371;
+    double latitude = 0;
+    double longitude = 0;
+    int id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +64,7 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
         tvMarca = findViewById(R.id.tvMarca);
         tvReferencia = findViewById(R.id.tvReferencia);
 
-
-        int id = getIntent().getIntExtra("Produto", 0);
+        id = getIntent().getIntExtra("Produto", 0);
         Singleton.getInstance(this).setDetailsListener(this);
         Singleton.getInstance(this).getProdutoAPI(this, id);
     }
@@ -149,4 +159,31 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
         Singleton.getInstance(this).addCartAPI(this, id, quantity);
     }
 
+    public void onClickbtnL(View view)
+    {
+        try
+        {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                //passar para a main activity !TO DO!
+            }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        Singleton.getInstance(this).getLojaMaisPerto(this,longitude,latitude,id);
+
+
+    }
 }
