@@ -122,9 +122,11 @@ public class JsonParser {
             String data = response.getString("dataFatura");
             double valorTotal = Double.parseDouble(response.getString("valorTotal"));
             double ivaTotal = Double.parseDouble(response.getString("valorIva"));
+            double subtotal = Double.parseDouble(response.getString("subtotal"));
+            double valorDesconto = Double.parseDouble(response.getString("valorDesconto"));
             String morada = response.getString("morada");
             String nif = response.getString("nif");
-            auxFatura = new Fatura(id,nif,morada,data,valorTotal,ivaTotal);
+            auxFatura = new Fatura(id,nif,morada,data,valorTotal,ivaTotal, valorDesconto, subtotal);
         }catch (JSONException e){
             System.out.println(e.getMessage());
         }

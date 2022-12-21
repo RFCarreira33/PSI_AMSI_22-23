@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
             client = new MqttClient("tcp://" + Public.IP + ":1883", "Cliente", null);
             client.connect();
+            SharedPreferences finalSharedPreferences = sharedPreferences;
             client.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (topic.equals("promo")) {
                         Intent i = new Intent(MainActivity.this, PromoCodeActivity.class);
+                        i.putExtra(Public.PROMOCODE, message.toString());
                         startActivity(i);
                     }
             }

@@ -367,12 +367,12 @@ public class Singleton {
         }
     }
 
-    public void buyCartAPI(final Context context){
+    public void checkCouponApi(final Context context, final String codigo){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
             Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, Public.apiURL + "/carrinho/buy?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Public.apiURL + "/carrinho/coupon?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     BetterToast(context, response);
@@ -382,7 +382,42 @@ public class Singleton {
                 public void onErrorResponse(VolleyError error) {
                     //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
-            });
+            }){
+                @Override
+                protected java.util.Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("promoCode", codigo);
+                    return params;
+                }
+            };
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    public void buyCartAPI(final Context context, @Nullable final String promoCode){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(!JsonParser.isConnected(context)){
+            Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
+        }else {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Public.apiURL + "/carrinho/buy?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    BetterToast(context, response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }){
+                @Override
+                protected java.util.Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    if (promoCode != null)
+                        params.put("promoCode", promoCode);
+                    return params;
+                }
+            };
             volleyQueue.add(stringRequest);
         }
     }

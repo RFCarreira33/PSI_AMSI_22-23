@@ -84,9 +84,9 @@ public class CartListAdapter extends BaseAdapter {
         public void update(Carrinho carrinho){
             tvNome.setText(carrinho.getProduto().getNome());
             double preco = carrinho.getProduto().getPreco() * carrinho.getQuantidade();
-            tvPrecoTotal.setText(String.format("Total %s €", String.valueOf(preco)));
-            tvQuantidade.setText(String.format("Qtd %s", String.valueOf(carrinho.getQuantidade())));
-            tvPreco.setText(String.format("%s €", String.valueOf(carrinho.getProduto().getPreco())));
+            tvPrecoTotal.setText(String.format("%s€", String.format("%.2f", preco)));
+            tvQuantidade.setText(String.format("Qtd: %s", String.valueOf(carrinho.getQuantidade())));
+            tvPreco.setText(String.format("%s€", String.format("%.2f", carrinho.getProduto().getPreco())));
             if(carrinho.getProduto().isEmStock()){
                 tvStock.setText(R.string.inStock);
                 tvStock.setTextColor(Color.parseColor("#048000"));

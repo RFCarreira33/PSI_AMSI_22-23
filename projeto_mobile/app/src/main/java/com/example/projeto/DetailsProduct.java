@@ -110,7 +110,7 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
             btnCart.setEnabled(false);
             tvStock.setTextColor(Color.parseColor("#b00200"));
         }
-        tvPreco.setText(String.format("%s €", produto.getPreco()));
+        tvPreco.setText(String.format("%.2f€", produto.getPreco()));
         setTitle(produto.getNome());
         Glide.with(this)
                 .load(Public.imgURL+produto.getCapa())

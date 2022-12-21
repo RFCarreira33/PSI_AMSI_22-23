@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String ID = "id", NIF = "nif",
             MORADA = "morada", DATA = "data", VALORTOTAL = "valorTotal", VALORIVA ="valorIva",
             PRODUTO = "produto_nome", REFERENCIA = "produto_referencia", QUANTIDADE = "quantidade",
-            VALOR = "valor", ID_FATURA = "id_fatura", NOME = "nome";
+            VALOR = "valor", ID_FATURA = "id_fatura", NOME = "nome", SUBTOTAL = "subtotal", VALORDESCONTO = "valorDesconto";
 
     public DBHelper(Context context) {
         super(context,DB_NAME,null,DB_VERSION);
@@ -34,7 +34,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 MORADA+" TEXT NOT NULL,"+
                 DATA+" TEXT NOT NULL,"+
                 VALORTOTAL+" DOUBLE NOT NULL,"+
-                VALORIVA+" DOUBLE NOT NULL);";
+                VALORIVA+" DOUBLE NOT NULL,"+
+                VALORDESCONTO+" DOUBLE NOT NULL,"+
+                SUBTOTAL+" DOUBLE NOT NULL);";
         sqLiteDatabase.execSQL(createTableFaturas);
 
         String createTableLinhasFatura = "CREATE TABLE "+TABLE_LINHAS+"("+ID+" INTEGER PRIMARY KEY,"+
@@ -78,6 +80,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(DATA, f.getData());
             values.put(VALORTOTAL, f.getValorTotal());
             values.put(VALORIVA, f.getValorIva());
+            values.put(VALORDESCONTO, f.getValorDesconto());
+            values.put(SUBTOTAL, f.getSubtotal());
             db.insert(TABLE_FATURAS, null, values);
 
     }
@@ -98,12 +102,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Fatura> getAllFaturasDB(){
         ArrayList<Fatura> faturas = new ArrayList<>();
-        Cursor cursor = db.query(TABLE_FATURAS, new String[]{ID, NIF, MORADA, DATA, VALORTOTAL, VALORIVA},
+        Cursor cursor = db.query(TABLE_FATURAS, new String[]{ID, NIF, MORADA, DATA, VALORTOTAL, VALORIVA, VALORDESCONTO, SUBTOTAL},
                 null, null, null, null, ID);
         if(cursor.moveToFirst()){
             do {
                 Fatura auxFatura = new Fatura(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
-                        cursor.getString(3), cursor.getDouble(4), cursor.getDouble(5));
+                        cursor.getString(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6), cursor.getDouble(7));
                 faturas.add(auxFatura);
             }while (cursor.moveToNext());
             cursor.close();
@@ -128,11 +132,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Fatura getFaturaDB(int id){
         Fatura fatura = null;
-        Cursor cursor = db.query(TABLE_FATURAS, new String[]{ID, NIF, MORADA, DATA, VALORTOTAL, VALORIVA},
+        Cursor cursor = db.query(TABLE_FATURAS, new String[]{ID, NIF, MORADA, DATA, VALORTOTAL, VALORIVA, VALORDESCONTO, SUBTOTAL},
                 ID+"=?", new String[]{String.valueOf(id)}, null, null, ID);
         if(cursor.moveToFirst()){
             fatura = new Fatura(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
-                    cursor.getString(3), cursor.getDouble(4), cursor.getDouble(5));
+                    cursor.getString(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6), cursor.getDouble(7));
             cursor.close();
         }
         return fatura;

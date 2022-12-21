@@ -89,7 +89,7 @@ public class ProductGridAdapter extends BaseAdapter
                 tvStock.setText(R.string.outStock);
                 tvStock.setTextColor(Color.parseColor("#b00200"));
             }
-            tvPreco.setText(String.format("%s €", produto.getPreco()));
+            tvPreco.setText(String.format("%.2f€", produto.getPreco()));
             Glide.with(context)
                     .load(Public.imgURL +produto.getCapa())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
