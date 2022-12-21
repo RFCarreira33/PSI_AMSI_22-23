@@ -46,7 +46,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 VALORIVA+" DOUBLE NOT NULL);";
 
         sqLiteDatabase.execSQL(createTableLinhasFatura);
+        String createTableCategorias = "CREATE TABLE "+TABLE_CATEGORIAS+"("+ID+" INTEGER PRIMARY KEY,"+
+                NOME+" TEXT NOT NULL);";
 
+        sqLiteDatabase.execSQL(createTableCategorias);
+
+        String createTableMarcas = "CREATE TABLE "+TABLE_MARCAS+"("+ID+" INTEGER PRIMARY KEY,"+
+                NOME+" TEXT NOT NULL);";
+
+        sqLiteDatabase.execSQL(createTableMarcas);
     }
 
     @Override
@@ -55,6 +63,10 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(deleteSQLTableFaturas);
         String deleteSQLTableLinhasFatura = "DROP TABLE IF EXISTS "+TABLE_LINHAS;
         sqLiteDatabase.execSQL(deleteSQLTableLinhasFatura);
+        String deleteSQLTableCategorias = "DROP TABLE IF EXISTS "+TABLE_CATEGORIAS;
+        sqLiteDatabase.execSQL(deleteSQLTableCategorias);
+        String deleteSQLTableMarcas = "DROP TABLE IF EXISTS "+TABLE_MARCAS;
+        sqLiteDatabase.execSQL(deleteSQLTableMarcas);
         this.onCreate(sqLiteDatabase);
     }
 
