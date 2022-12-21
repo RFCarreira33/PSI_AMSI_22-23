@@ -125,6 +125,14 @@
         android:layout_width="match_parent"
         android:layout_height="10dp" />
 
+    <Button
+        android:id="@+id/btnLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Ver Loja Mais Proxima com Stock"
+        android:onClick="onClickbtnL"/>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="10dp" />
