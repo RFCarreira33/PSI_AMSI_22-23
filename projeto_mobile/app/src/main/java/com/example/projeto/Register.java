@@ -80,6 +80,7 @@ public class Register extends AppCompatActivity {
         finish();
     }
 
+    //verificações
     public boolean isNomeValid(String nome){
         if(nome.length() <= 4){ return false;}
         return true;

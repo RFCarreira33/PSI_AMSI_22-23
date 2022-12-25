@@ -1,14 +1,12 @@
 package com.example.projeto;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AsyncPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -147,6 +145,7 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         });
         builder.setNegativeButton("Não", (dialogInterface, i) -> dialogInterface.dismiss());
         builder.show();
+        onResume();
     }
 
     public void onClickCheckCoupon(View view){

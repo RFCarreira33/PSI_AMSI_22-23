@@ -23,12 +23,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import Listeners.DetailsListener;
 import Models.Produto;
 import Models.Singleton;
+import Utils.JsonParser;
 import Utils.Public;
 
 public class DetailsProduct extends AppCompatActivity implements DetailsListener {
@@ -37,9 +39,8 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
     private TextView tvDetails, tvStock, tvPreco, tvMarca, tvReferencia;
     private ImageButton btnMore, btnMinus;
     private EditText numQuant;
-    private Button btnCart;
+    private Button btnCart, btnLocation;
     ActionBar actionBar = null;
-    private static final int EARTH_RADIUS = 6371;
     double latitude = 0;
     double longitude = 0;
     int id;
@@ -52,7 +53,12 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
 
+        if (!JsonParser.isConnected(this)) {
+            Toast.makeText(this, "Sem ligação à internet", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
+        btnLocation = findViewById(R.id.btnLocation);
         imgCapa = findViewById(R.id.imageCapa);
         tvDetails = findViewById(R.id.tvDetalhes);
         tvStock = findViewById(R.id.tvStock);
@@ -119,6 +125,7 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
             tvStock.setText(R.string.outStock);
             btnCart.setEnabled(false);
             tvStock.setTextColor(Color.parseColor("#b00200"));
+            btnLocation.setEnabled(false);
         }
         tvPreco.setText(String.format("%.2f€", produto.getPreco()));
         setTitle(produto.getNome());
@@ -168,7 +175,6 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                //passar para a main activity !TO DO!
             }
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);

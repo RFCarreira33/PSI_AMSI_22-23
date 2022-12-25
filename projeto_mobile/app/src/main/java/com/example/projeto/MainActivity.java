@@ -1,52 +1,17 @@
 package com.example.projeto;
 
-import static java.lang.Math.acos;
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
-import static java.lang.Math.toRadians;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import android.app.NotificationManager;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentContainerView;
-
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -71,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.drawable.logo);
+        //conecta a app ao broker quando a app é aberta
         mosquito();
     }
 
@@ -136,9 +102,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     if (topic.equals("filters")) {
+                        //atualiza os filtros aplicação
                         Singleton.getInstance(MainActivity.this).getAllFiltersAPI(MainActivity.this);
                     }
                     if (topic.equals("promo")) {
+                        //Abre a activity de promoções com o codigo recebido pelo broker
                         Intent i = new Intent(MainActivity.this, PromoCodeActivity.class);
                         i.putExtra(Public.PROMOCODE, message.toString());
                         startActivity(i);
@@ -149,8 +117,10 @@ public class MainActivity extends AppCompatActivity {
             public void deliveryComplete (IMqttDeliveryToken token){
             }
         });
+            //canal de filters para ser usado para updates de app dinamicos qos 1
         client.subscribe("filters", 1);
         if (sharedPreferences.contains(Public.TOKEN)) {
+            // Se o utilizador estiver logado subscreve-se ao canal de promoções e recebe alertas de promoções
             client.subscribe("promo", 1);
         }
         }catch(Exception e){
@@ -158,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //botao de abrir o qr code reader
     public void onClickbtn(View view) {
         Intent intent = new Intent(this, QRReader.class);
         startActivity(intent);

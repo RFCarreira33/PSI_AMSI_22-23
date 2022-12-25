@@ -73,6 +73,7 @@ public class PersonalArea extends AppCompatActivity {
     public void onCLickLogout(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Terminar Sessão");
+        //caso o utilizador efetue o logout os seus dados são apagados da aplicação
         builder.setMessage("Tem a certeza que pretende terminar sessão?");
         builder.setPositiveButton("Sim", (dialog, which) -> {
             dbHelper.removeAllFaturas();

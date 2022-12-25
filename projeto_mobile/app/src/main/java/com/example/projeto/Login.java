@@ -38,6 +38,7 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "Username invalid", Toast.LENGTH_LONG).show();
             return;
         }
+        //converte as crencais para base64
         String password = tbPassword.getText().toString();
         String credentials = username + ":" + password;
         String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
