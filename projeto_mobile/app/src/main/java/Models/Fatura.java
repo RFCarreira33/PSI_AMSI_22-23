@@ -6,15 +6,33 @@ import java.util.Date;
 public class Fatura {
     int id;
     String nif, morada, data;
-    double valorTotal, valorIva;
+    double valorTotal, valorIva, valorDesconto, subtotal;
 
-    public Fatura(int id, String nif, String morada, String data, double valorTotal, double valorIva) {
+    public Fatura(int id, String nif, String morada, String data, double valorTotal, double valorIva, double valorDesconto, double subtotal) {
         this.id = id;
+        this.subtotal = subtotal;
+        this.valorDesconto = valorDesconto;
         this.nif = nif;
         this.morada = morada;
         this.data = data;
         this.valorTotal = valorTotal;
         this.valorIva = valorIva;
+    }
+
+    public double getValorDesconto() {
+        return valorDesconto;
+    }
+
+    public void setValorDesconto(double valorDesconto) {
+        this.valorDesconto = valorDesconto;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
 
     public int getId() {

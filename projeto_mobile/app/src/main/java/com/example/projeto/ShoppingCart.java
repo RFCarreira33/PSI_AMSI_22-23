@@ -1,11 +1,14 @@
 package com.example.projeto;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AsyncPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +33,7 @@ import Utils.Public;
 public class ShoppingCart extends AppCompatActivity implements CartListener {
 
     private TextView tvPrecoTotal,tvNumeroArtigos ;
+    private EditText tbCoupon;
     private ListView lvCart;
     private Button btnCheckout, btnClearCart;
     private double Total;
@@ -41,6 +46,7 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         setTitle("Carrinho de Compras");
         tvPrecoTotal = findViewById(R.id.tvPrecoTotal);
         tvNumeroArtigos = findViewById(R.id.tvArtigos);
+        tbCoupon = findViewById(R.id.tbCoupon);
         lvCart = findViewById(R.id.lvCart);
         btnCheckout = findViewById(R.id.btnComprar);
         btnClearCart = findViewById(R.id.btnClear);
@@ -120,22 +126,36 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
         builder.setMessage("Tem a certeza que pretende limpar o carrinho?");
         builder.setPositiveButton("Sim", (dialogInterface, i) -> {
             Singleton.getInstance(this).clearCartAPI(this);
-            finish();
+            onResume();
         });
         builder.setNegativeButton("Não", (dialogInterface, i) -> dialogInterface.dismiss());
         builder.show();
     }
 
     public void onClickBuy(View view){
+        String coupon = tbCoupon.getText().toString();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Finalizar Compra");
         builder.setMessage("Tem a certeza que pretende finalizar a compra?");
         builder.setPositiveButton("Sim", (dialogInterface, i) -> {
-            Singleton.getInstance(this).buyCartAPI(this);
-            finish();
+            if (coupon.isEmpty()) {
+                Singleton.getInstance(this).buyCartAPI(this, null);
+            } else {
+                Singleton.getInstance(this).buyCartAPI(this, coupon);
+            }
+            onResume();
         });
         builder.setNegativeButton("Não", (dialogInterface, i) -> dialogInterface.dismiss());
         builder.show();
+    }
+
+    public void onClickCheckCoupon(View view){
+        String coupon = tbCoupon.getText().toString();
+        if(coupon.isEmpty()){
+            Toast.makeText(this, "Insira um cupão", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Singleton.getInstance(this).checkCouponApi(this, coupon);
     }
 
     @Override
@@ -149,7 +169,7 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
                 Total += c.getProduto().getPreco() * c.getQuantidade();
                 TotalArtigos += c.getQuantidade();
             }
-            tvPrecoTotal.setText(String.format("%s €", Total));
+            tvPrecoTotal.setText(String.format("%s€", String.format("%.2f", Total)));
             tvNumeroArtigos.setText(String.format("Artigos: %s", TotalArtigos));
             lvCart.setAdapter(new CartListAdapter(this, carrinhos));
         }

@@ -74,8 +74,8 @@ public class LinhaListAdapter extends BaseAdapter {
             tvNome.setText(Linha.getProduto_nome());
             tvReferencia.setText(Linha.getProduto_referencia());
             tvQuantidade.setText(String.format("Qtd %s", String.valueOf(Linha.getQuantidade())));
-            tvPrecoTotal.setText(String.format("Preço %s€", String.valueOf(Linha.getValor())));
-            tvIvaTotal.setText(String.format("%s€", String.valueOf("Iva " + Linha.getValorIva())));
+            tvPrecoTotal.setText(String.format("%.2f€", Linha.getValor()));
+            tvIvaTotal.setText(String.format("%.2f€", Linha.getValorIva()));
         }
 
         }
