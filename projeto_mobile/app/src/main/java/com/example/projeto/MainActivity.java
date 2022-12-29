@@ -36,8 +36,13 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.drawable.logo);
-        //conecta a app ao broker quando a app é aberta
+    }
+
+    @Override
+    protected void onResume() {
+        //conecta a app ao broker
         mosquito();
+        super.onResume();
     }
 
     @Override
