@@ -36,13 +36,8 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.drawable.logo);
-    }
-
-    @Override
-    protected void onResume() {
         //conecta a app ao broker
         mosquito();
-        super.onResume();
     }
 
     @Override
@@ -122,12 +117,10 @@ public class MainActivity extends AppCompatActivity {
             public void deliveryComplete (IMqttDeliveryToken token){
             }
         });
-            //canal de filters para ser usado para updates de app dinamicos qos 1
+        //canal de filters para ser usado para updates de app dinamicos qos 1
         client.subscribe("filters", 1);
-        if (sharedPreferences.contains(Public.TOKEN)) {
-            // Se o utilizador estiver logado subscreve-se ao canal de promoções e recebe alertas de promoções
-            client.subscribe("promo", 1);
-        }
+        //canal de promo para ser usado para anuncio de promoções qos 1
+        client.subscribe("promo", 1);
         }catch(Exception e){
         }
 
