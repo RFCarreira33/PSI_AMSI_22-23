@@ -125,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
             public void deliveryComplete (IMqttDeliveryToken token){
             }
         });
+        //canal de filters para ser usado para updates de app dinamicos qos 1
         client.subscribe("filters", 1);
-        if (sharedPreferences.contains(Public.TOKEN)) {
-            client.subscribe("promo", 1);
-        }
+        //canal de promo para ser usado para anuncio de promoções qos 1
+        client.subscribe("promo", 1);
         }catch(Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
