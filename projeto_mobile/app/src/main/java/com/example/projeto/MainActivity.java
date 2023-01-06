@@ -132,5 +132,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onClickSettings(View view) {
+        Intent intent = new Intent(this, ConfigActivty.class);
+        startActivity(intent);
+    }
 
 }
