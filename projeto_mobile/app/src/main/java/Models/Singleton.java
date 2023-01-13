@@ -147,8 +147,13 @@ public class Singleton {
                 public void onResponse(String response) {
                     SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(Public.TOKEN, response);
-                    editor.apply();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        editor.putString(Public.TOKEN, jsonObject.getString("response"));
+                        editor.apply();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     BetterToast(context, "Login efetuado com sucesso");
                 }
             }, new Response.ErrorListener() {
@@ -595,8 +600,22 @@ public class Singleton {
 
     //endregion Filters
 
-    public void BetterToast(Context context,String message){
-        message = message.replace("\"", "");
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    public void BetterToast(Context context,String message) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (jsonObject != null) {
+            try {
+                Toast.makeText(context, jsonObject.getString("response"), Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        }
     }
+
 }
