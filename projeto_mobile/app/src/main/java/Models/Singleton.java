@@ -335,6 +335,9 @@ public class Singleton {
 
    public void viewCartAPI(final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(sharedPreferences.contains(Public.COUPON)){
+            sharedPreferences.edit().remove(Public.COUPON).apply();
+        }
         if(!JsonParser.isConnected(context)){
             Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
         }else {
@@ -410,12 +413,25 @@ public class Singleton {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Public.apiURL + "/carrinho/coupon?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String valid = jsonObject.getString("response");
+                        //Doesn't seem to be able to validade words in portuguese so I'm using this workaround
+                        if(valid.length() == 13){
+                            sharedPreferences.edit().putString(Public.COUPON, codigo).apply();
+                        }
+                        else{
+                            BetterToast(context, response);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     BetterToast(context, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "asdasd",Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -429,7 +445,7 @@ public class Singleton {
         }
     }
 
-    public void buyCartAPI(final Context context, @Nullable final String promoCode){
+    public void buyCartAPI(final Context context, final String deliveryAddress){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
         if(!JsonParser.isConnected(context)){
             Toast.makeText(context, context.getString(R.string.sem_internet), Toast.LENGTH_LONG).show();
@@ -448,8 +464,9 @@ public class Singleton {
                 @Override
                 protected java.util.Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    if (promoCode != null)
-                        params.put("promoCode", promoCode);
+                    params.put("adress", deliveryAddress);
+                    if (sharedPreferences.contains(Public.COUPON))
+                        params.put("promoCode", sharedPreferences.getString(Public.COUPON, null));
                     return params;
                 }
             };

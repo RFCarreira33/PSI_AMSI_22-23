@@ -51,43 +51,6 @@
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_weight="0" />
-
-    <View
-        android:id="@+id/divider7"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_weight="0"
-        android:background="?android:attr/listDivider" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/tbCoupon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="Inserir Código Promocional"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
-
-        <Button
-            android:id="@+id/btnAplicar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="onClickCheckCoupon"
-            android:text="Aplicar" />
-
-    </LinearLayout>
 
     <Space
         android:layout_width="wrap_content"

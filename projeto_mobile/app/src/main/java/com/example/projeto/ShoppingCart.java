@@ -1,7 +1,9 @@
 package com.example.projeto;
 
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -131,31 +133,10 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
     }
 
     public void onClickBuy(View view){
-        String coupon = tbCoupon.getText().toString();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Finalizar Compra");
-        builder.setMessage("Tem a certeza que pretende finalizar a compra?");
-        builder.setPositiveButton("Sim", (dialogInterface, i) -> {
-            if (coupon.isEmpty()) {
-                Singleton.getInstance(this).buyCartAPI(this, null);
-            } else {
-                Singleton.getInstance(this).buyCartAPI(this, coupon);
-            }
-            onResume();
-        });
-        builder.setNegativeButton("Não", (dialogInterface, i) -> dialogInterface.dismiss());
-        builder.show();
-        onResume();
+        Intent intent = new Intent(this, CheckoutActivity.class);
+        startActivity(intent);
     }
 
-    public void onClickCheckCoupon(View view){
-        String coupon = tbCoupon.getText().toString();
-        if(coupon.isEmpty()){
-            Toast.makeText(this, "Insira um cupão", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Singleton.getInstance(this).checkCouponApi(this, coupon);
-    }
 
     @Override
     public void onRefreshCart(ArrayList<Carrinho> carrinhos) {
