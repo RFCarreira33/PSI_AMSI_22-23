@@ -16,7 +16,7 @@
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo_dark" />
 
     <EditText
         android:id="@+id/tbUsername"
@@ -47,17 +47,18 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/dark"
+        android:textColor="@color/white"
         android:onClick="onClickLogin"
-        android:shadowColor="@color/purple_500"
         android:text="@string/login" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/dark"
         android:onClick="onClickRegister"
-        android:shadowColor="@color/purple_500"
-        android:text="@string/newAccount" />
+        android:text="@string/newAccount"
+        android:textColor="@color/white"
+        android:textColorLink="@color/white" />
 </LinearLayout>

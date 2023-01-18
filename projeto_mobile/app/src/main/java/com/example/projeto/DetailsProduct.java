@@ -126,6 +126,9 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
             btnCart.setEnabled(false);
             tvStock.setTextColor(Color.parseColor("#b00200"));
             btnLocation.setEnabled(false);
+            btnMore.setEnabled(false);
+            btnMinus.setEnabled(false);
+            numQuant.setEnabled(false);
         }
         tvPreco.setText(String.format("%.2f€", produto.getPreco()));
         setTitle(produto.getNome());
@@ -161,8 +164,20 @@ public class DetailsProduct extends AppCompatActivity implements DetailsListener
     }
 
     public void onClickAddCart(View view) {
-        int id = getIntent().getIntExtra("Produto", 0);
-        int quantity = Integer.parseInt(numQuant.getText().toString());
+        int quantity;
+        SharedPreferences sharedPreferences = getSharedPreferences(Public.SHARED_FILE, MODE_PRIVATE);
+        if(!sharedPreferences.contains(Public.TOKEN)){
+            Intent i = new Intent(this, Login.class);
+            startActivity(i);
+            return;
+        }
+        try {
+            quantity = Integer.parseInt(numQuant.getText().toString());
+        }catch (Exception e){
+            Toast.makeText(this, "Quantidade inválida", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int id = getIntent().getIntExtra("Produto", 1);
         Singleton.getInstance(this).addCartAPI(this, id, quantity);
     }
 

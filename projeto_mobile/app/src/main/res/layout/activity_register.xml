@@ -118,8 +118,8 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/dark"
         android:onClick="onClickRegister"
-        android:shadowColor="@color/purple_500"
-        android:text="Criar Conta" />
+        android:text="Criar Conta"
+        android:textColorLink="@color/white" />
 </LinearLayout>
