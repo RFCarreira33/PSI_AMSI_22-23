@@ -1,46 +1,33 @@
-# Projeto GlobalDiga
+<!-- Header -->
+<div align="center">
+<h1>
+<p align="center">
+  <br>GlobalDiga
+</h1>
+Online Tech Store.
+<br>
+<a href="#summary">Summary</a> •
+<a href="https://github.com/RFCarreira33/PSI_AMSI_22-23/blob/main/resources/about.md">About The Project</a> •
+  <a href="#installation">Installation</a> • <a href="https://github.com/RFCarreira33/PSI_PLSI_22-23">Website</a> 
+</div>
 
-### Instituição:
+## Summary
 
-- Instituto Politécnico de Leiria
-  ![Logo IPL](https://www.ipleiria.pt/wp-content/uploads/2022/04/estg_h.svg)
+GlobalDiga is our final project of the [PSI](https://www.ipleiria.pt/curso/tesp-de-programacao-de-sistemas-de-informacao/) course, and it is our take on a online tech store, you can read more about the details [here](https://github.com/RFCarreira33/PSI_AMSI_22-23/blob/main/resources/about.md).
 
-#### Curso:
+## Installation
 
-> - TeSP — Programação de Sistemas de Informação
+```sh
+  git clone https://github.com/RFCarreira33/PSI_AMSI_22-23
+```
 
-#### Unidades curriculares:
+After cloning the repository make sure you are serving the backend of the [web component](https://github.com/RFCarreira33/PSI_PLSI_22-23) for it to work properly and install the app using [Android Studio](https://developer.android.com/studio).
 
-> - Acesso Móvel a Sistemas de Informação
+## Examples
 
-#### Desenvolvido por:
-
-> - João Jesus Nº2211874
-> - João Ferreira Nº2211889
-> - Rodrigo Carreira Nº2213146
-
-#### Descrição:
-> Pretende-se implementar uma aplicação mobile para dispositivos Android
-> Complementando a [aplicação Web](https://github.com/RFCarreira33/PSI_PLSI_22-23).
-> Esta possui como objetivos principais:
->
-> - Permitir que os clientes efetuem compras em qualquer lugar
-> - Utilizar funcionalidades apenas disponíveis nos dispositivos móveis
-
-> Este projeto foi desenvolvido com:
->
-> - [Android Studio](https://developer.android.com/)
-> - [SQLite](https://www.sqlite.org/)
-> - [Mosquitto MQTT broker](https://mosquitto.org/)
-> - [Glide](https://github.com/bumptech/glide)
-> - [Zxing (QRCode Reader)](https://github.com/zxing-js/library)
-
-### REST API
-
-> Foi desenvolvida uma API na [aplicação Web](https://github.com/RFCarreira33/PSI_PLSI_22-23) para auxiliar na passagem de dados entre a aplicação Mobile e Web vice versa. [Documentação dos Endpoints](https://github.com/RFCarreira33/PSI_PLSI_22-23/tree/development/projeto_final/backend/modules/api)
-
-### Credenciais de utilizadores
-Por defeito só existe uma conta de cliente registada na [base de dados](https://github.com/RFCarreira33/PSI_PLSI_22-23#Base-de-dados).
-
-> - Username: cliente
-> - Password: cliente123
+<div align="center">
+<img height="500" src="resources/imgs/main.png">
+<img height="500" src="resources/imgs/cart.png">
+<br>
+Mobile App Screenshots
+</div>
