@@ -6,6 +6,7 @@ public class Public {
     public static final String imgURL= String.format("http://%s:8080/img/", IP);
     public static final String SHARED_FILE="DADOS_USER";
     public static final String TOKEN = "TOKEN";
+    public static final String PDF = "PDF";
     public static final String PROMOCODE = "PROMOCODE";
     public static final String COUPON = "COUPON";
 }

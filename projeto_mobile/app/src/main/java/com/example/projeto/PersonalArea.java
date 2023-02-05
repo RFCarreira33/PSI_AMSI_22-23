@@ -45,6 +45,10 @@ public class PersonalArea extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.app_bar, menu);
+        if(!JsonParser.isConnected(this)) {
+            menu.removeItem(R.id.app_bar_cart);
+            menu.removeItem(R.id.app_bar_search);
+        }
         menu.removeItem(R.id.app_bar_personalArea);
         return super.onCreateOptionsMenu(menu);
     }

@@ -1,7 +1,11 @@
 package Models;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,6 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -538,6 +547,41 @@ public class Singleton {
                 }
             });
             volleyQueue.add(jsonArrayRequest);
+        }
+    }
+
+    public void getPDF(final Context context, final int id){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.SHARED_FILE, Context.MODE_PRIVATE);
+        if(!JsonParser.isConnected(context)){
+            BetterToast(context, context.getString(R.string.sem_internet));
+        }else {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, Public.apiURL + "/faturas/"+ id +"?access-token="+ sharedPreferences.getString(Public.TOKEN, null), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    BetterToast(context, response);
+                    JSONObject jsonObject = null;
+                    try{
+                        jsonObject = new JSONObject(response);
+                        String pdf = jsonObject.getString("pdf");
+                        if(sharedPreferences.contains(Public.PDF)){
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.remove(Public.PDF);
+                            editor.putString(Public.PDF, pdf);
+                            editor.apply();
+                        }else{
+                            sharedPreferences.edit().putString(Public.PDF, pdf).apply();
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+            volleyQueue.add(stringRequest);
         }
     }
 

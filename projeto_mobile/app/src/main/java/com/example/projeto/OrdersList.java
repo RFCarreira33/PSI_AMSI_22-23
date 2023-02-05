@@ -38,6 +38,7 @@ public class OrdersList extends Fragment implements FaturasListener {
         lvOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Singleton.getInstance(getContext()).getPDF(getContext(), (int) l);
                 Intent intent = new Intent(getContext(), FaturaActivity.class);
                 intent.putExtra("Fatura", (int) l);
                 startActivity(intent);
