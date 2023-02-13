@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity {
     public void onClickLogin(View view){
         String username = tbUsername.getText().toString();
         if(!isUsernameValid(username)){
-            Toast.makeText(this, "Username invalid", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Username invalid", Toast.LENGTH_SHORT).show();
             return;
         }
         //converte as crencais para base64

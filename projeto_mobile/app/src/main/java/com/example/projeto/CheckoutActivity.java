@@ -35,8 +35,9 @@ public class CheckoutActivity extends AppCompatActivity implements DadosListener
 
     }
 
+
+
     public void onClickFinish(View view) {
-        String coupon = tbCoupon.getText().toString();
         int selectedId = deliveryMethod.getCheckedRadioButtonId();
         String address;
         switch (selectedId){
@@ -46,12 +47,12 @@ public class CheckoutActivity extends AppCompatActivity implements DadosListener
             case R.id.rbDelivery:
                 address = tbAddress.getText().toString();
                 if (address.isEmpty()){
-                    Toast.makeText(this, "Insira um endereço de entrega", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Insira um endereço de entrega", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 break;
             default:
-                Toast.makeText(this, "Selecione um método de entrega", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Selecione um método de entrega", Toast.LENGTH_SHORT).show();
                 return;
         }
 

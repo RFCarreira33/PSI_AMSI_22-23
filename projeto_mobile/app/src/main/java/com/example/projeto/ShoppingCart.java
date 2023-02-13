@@ -148,6 +148,9 @@ public class ShoppingCart extends AppCompatActivity implements CartListener {
             for (Carrinho c : carrinhos) {
                 Total += c.getProduto().getPreco() * c.getQuantidade();
                 TotalArtigos += c.getQuantidade();
+                if(!c.getProduto().isEmStock()){
+                    btnCheckout.setEnabled(false);
+                }
             }
             tvPrecoTotal.setText(String.format("%s€", String.format("%.2f", Total)));
             tvNumeroArtigos.setText(String.format("Artigos: %s", TotalArtigos));
